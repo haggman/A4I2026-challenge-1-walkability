@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "status": "out_of_scope",
+  "intent": {
+    "schema_version": "1.0.0",
+    "intent_type": "out_of_scope",
+    "city": "Phoenix",
+    "location_query": "Phoenix",
+    "lat": null,
+    "lon": null,
+    "k_sites": 3,
+    "min_spacing_m": 2000.0,
+    "radius_m": 800.0,
+    "forecast_high_f": null,
+    "unmeasured_only": false,
+    "compared_ranks": [],
+    "missing_fields": [],
+    "clarification_question": null,
+    "refusal_reason": "other",
+    "status": "out_of_scope",
+    "k": 3,
+    "threshold_f": 95.0,
+    "candidate_ranks": [],
+    "missing_parameters": [],
+    "clarifying_question": null,
+    "refusal_explanation": "'Phoenix' lies outside the Atlanta, GA Heat Watch campaign footprint. Our BigQuery ML model (`a4i_ml.offset_model_v1`) has training support only inside Atlanta's 1 km-buffered Heat Watch campaign boundary and refuses to extrapolate to other cities or outer suburbs."
+  },
+  "data_result": {
+    "schema_version": "1.0.0",
+    "status": "out_of_scope",
+    "intent_type": "out_of_scope",
+    "sites": [],
+    "runner_up_sites": [],
+    "comparison_table": null,
+    "heat_frequency": null,
+    "equity_audit": null,
+    "recommendation": null,
+    "provenance": [],
+    "error_message": "'Phoenix' lies outside the Atlanta, GA Heat Watch campaign footprint. Our BigQuery ML model (`a4i_ml.offset_model_v1`) has training support only inside Atlanta's 1 km-buffered Heat Watch campaign boundary and refuses to extrapolate to other cities or outer suburbs.",
+    "rows": [],
+    "summary_metrics": {
+      "sites_returned": 0
+    }
+  },
+  "narrative_markdown": "**Scope & Methodological Refusal (`out_of_scope_city`):** 'Phoenix' lies outside the Atlanta, GA Heat Watch campaign footprint. Our BigQuery ML model (`a4i_ml.offset_model_v1`) has training support only inside Atlanta's 1 km-buffered Heat Watch campaign boundary and refuses to extrapolate to other cities or outer suburbs.",
+  "verification": {
+    "passed": true,
+    "ungrounded_numbers": [],
+    "framing_violations": [],
+    "missing_citations": [],
+    "fallback_used": false
+  },
+  "latency_ms": 0,
+  "trace_id": "tr_sample_refusal_out_of_scope",
+  "narrative": "**Scope & Methodological Refusal (`out_of_scope_city`):** 'Phoenix' lies outside the Atlanta, GA Heat Watch campaign footprint. Our BigQuery ML model (`a4i_ml.offset_model_v1`) has training support only inside Atlanta's 1 km-buffered Heat Watch campaign boundary and refuses to extrapolate to other cities or outer suburbs.",
+  "citations": [],
+  "total_latency_ms": 0,
+  "error_message": "'Phoenix' lies outside the Atlanta, GA Heat Watch campaign footprint. Our BigQuery ML model (`a4i_ml.offset_model_v1`) has training support only inside Atlanta's 1 km-buffered Heat Watch campaign boundary and refuses to extrapolate to other cities or outer suburbs.",
+  "recommendation": null
+}

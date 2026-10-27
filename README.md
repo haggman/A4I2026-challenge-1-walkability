@@ -1,4 +1,60 @@
-# Challenge 1—Community Climate Resilience: Urban Heat
+# Atlanta Heat Resilience & Cooling Center Planner
+
+**Agents for Impact 2026 — Challenge 1 (City of Atlanta · Track: *This Budget Cycle*)**
+
+---
+
+## 1. What Our Application Accomplishes
+
+When a heat wave hits Atlanta, two blocks in the same neighborhood can feel **more than 10°F different**—and the hottest blocks are often home to seniors, low-income families, and residents without cars who cannot easily leave.
+
+Our application gives the **City of Atlanta** a conversational planning assistant and interactive map to answer one high-stakes budget question:
+> ***“We have funding for three permanent cooling centers and a City Council vote in three weeks. Where should they go, and why?”***
+
+Instead of leaving planners to stitch together spreadsheets, our assistant does four things in seconds:
+
+1. **Finds the Hottest Blocks—Even Where Nobody Measured:** Uses street-level heat measurements and neighborhood characteristics to estimate how much hotter any spot in Atlanta runs compared to the city average, and explains *why* (such as dense pavement, older housing stock, or lack of green space).
+2. **Prioritizes Residents Who Need Help Most:** Combines heat risk with how often Atlanta hits dangerous summer temperatures and who lives within walking distance—focusing on **seniors (65+)**, **households without a vehicle**, and **families in poverty**.
+3. **Avoids Overlapping Coverage & Defends Trade-Offs:** Ensures the three recommended centers are spaced at least **2 km apart** so they reach three distinct communities, and clearly explains why runner-up locations (like “Site 4”) were passed over.
+4. **Checks for Fairness & Drafts the Council Proposal:** Automatically audits the final sites against Atlanta’s citywide averages to prove the investment reaches underserved neighborhoods—without using race as a targeting input—and generates a **ready-to-present City Council proposal**.
+
+---
+
+## 2. Example: What a City Planner Can Do (In 2 Minutes)
+
+A planner opens the web app before a budget meeting and holds a natural conversation alongside the interactive Atlanta map:
+
+| Step | What the Planner Asks | What the Assistant Delivers |
+|---|---|---|
+| **1. Pick the Best Sites** | *“We can fund 3 permanent cooling centers this budget cycle. Where should they go?”* | Pins **3 non-overlapping sites** on the map (e.g., Downtown/Old Fourth Ward and West/Southwest Atlanta), showing each location’s extra heat burden (`+2°F to +3°F` hotter than the city average), nearby population, and one-click Google Maps walking links. |
+| **2. Answer Council Pushback** | *“Why did you pick Site 2 over Site 4?”* | Explains that while Site 4 is also hot, it sits right next to Site 1—meaning it would serve the same residents twice—whereas Site 2 reaches thousands of additional transit-dependent residents. |
+| **3. Understand Local Need** | *“How often does Site 1 hit dangerous heat, and who lives within a 10-minute walk?”* | Shows that because Site 1 runs hotter than the rest of the city, it experiences **nearly 4× more 95°F+ days per summer** than the airport weather station reports, and summarizes the seniors and car-free households within an 800-meter walk. |
+| **4. Verify Fairness & Draft the Memo** | *“Did we reach the neighborhoods that need this most? Draft the proposal for Council.”* | Displays a clear **Fairness Audit** confirming the chosen neighborhoods have **nearly 2× the citywide poverty and car-free rates**, and produces a **1-page printable Council Memo**. |
+| **5. Know When to Say “I Don’t Know”** | *“How much cooler will this block get if we plant 100 trees?”* or *“What about Chicago?”* | Responds honestly when a question is outside its data—explaining that it can pinpoint *where* heat is worst today, but cannot simulate future tree growth or estimate cities that aren’t loaded. |
+
+---
+
+## 3. What Can Be Expanded On Next
+
+Our tool is honest about what today’s public data can and cannot do, giving the city a clear roadmap for Phase 2:
+
+1. **Real Walking Routes Instead of Straight-Line Circles:** Upgrade the 800-meter catchment circles to real street-by-street 10-minute walk times that account for highways, rail lines, and shaded sidewalks.
+2. **Existing City Buildings & Transit Stops:** Layer in Atlanta’s existing libraries, recreation centers, and MARTA bus/rail stops so planners can compare **upgrading an existing city building** versus **building a new center from scratch**.
+3. **Tree Canopy & Cool-Pavement Planning:** Add block-by-block tree cover and pavement maps so the same assistant can guide long-term shade and street-cooling investments over the next decade.
+4. **Overnight & Indoor Heat Alerts:** Expand from daytime street heat to overnight temperatures and EMS call patterns, helping emergency managers deploy mobile hydration units during multi-day heat waves.
+
+> **Key Documentation Links:**
+> - **Architecture & Implementation Plan:** [`docs/agents/IMPLEMENTATION_PLAN.md`](docs/agents/IMPLEMENTATION_PLAN.md)
+> - **Data & ML Handoff:** [`docs/HANDOFF.md`](docs/HANDOFF.md)
+> - **Design Decisions & Data Licensing:** [`docs/DECISIONS.md`](docs/DECISIONS.md)
+> - **Planner UI (heat-ui):** [`ui_service/README.md`](ui_service/README.md)
+> - **Deployment:** [`infra/`](infra/) scripts (`deploy_toolbox.sh`, `deploy_agent_api.sh`) and section 8.1 of the implementation plan for `heat-ui`
+
+*Data Credits: NOAA & CAPA Strategies Heat Watch (CC0), NOAA GHCN-Daily, US Census ACS & TIGER/Line. Thanks to the volunteers who drove the Atlanta routes.*
+
+---
+
+# Challenge 1 Reference—Community Climate Resilience: Urban Heat
 
 **Agents for Impact 2026**
 

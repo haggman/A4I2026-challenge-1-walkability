@@ -1,0 +1,75 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "provenance_id": {
+      "description": "Citation tag e.g. 'P1', 'P2'.",
+      "title": "Provenance Id",
+      "type": "string"
+    },
+    "source_type": {
+      "default": "mcp_toolbox",
+      "enum": [
+        "mcp_toolbox",
+        "bq_direct"
+      ],
+      "title": "Source Type",
+      "type": "string"
+    },
+    "tool_name": {
+      "description": "Python domain wrapper or orchestrator step.",
+      "title": "Tool Name",
+      "type": "string"
+    },
+    "mcp_tool_name": {
+      "description": "Tool invoked on heat-toolbox.",
+      "title": "Mcp Tool Name",
+      "type": "string"
+    },
+    "sql_object": {
+      "description": "Underlying BigQuery view/table/model in a4i_semantic or a4i_ml.",
+      "title": "Sql Object",
+      "type": "string"
+    },
+    "parameters": {
+      "additionalProperties": true,
+      "title": "Parameters",
+      "type": "object"
+    },
+    "row_count": {
+      "minimum": 0,
+      "title": "Row Count",
+      "type": "integer"
+    },
+    "model_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": "offset_model_v1",
+      "title": "Model Version"
+    },
+    "queried_at_utc": {
+      "title": "Queried At Utc",
+      "type": "string"
+    }
+  },
+  "required": [
+    "provenance_id",
+    "tool_name",
+    "mcp_tool_name",
+    "sql_object",
+    "row_count",
+    "queried_at_utc"
+  ],
+  "title": "Provenance",
+  "type": "object"
+}

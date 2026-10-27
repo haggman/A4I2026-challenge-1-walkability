@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "bigquery-dev": {
+      "command": "npx",
+      "args": ["-y", "@toolbox-sdk/server", "--prebuilt", "bigquery", "--stdio"],
+      "env": {
+        "BIGQUERY_PROJECT": "PROJECT",
+        "BIGQUERY_LOCATION": "US"
+      }
+    }
+  }
+}

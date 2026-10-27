@@ -1,0 +1,85 @@
+# MCP Toolbox for Databases: heat-planner toolset.
+# Replace PROJECT. Validate against the docs for the PINNED Toolbox image version.
+# Read-only is enforced by IAM on toolbox-sa (dataViewer on a4i_climate + a4i_ml, jobUser).
+
+sources:
+  heat-bq:
+    kind: bigquery
+    project: PROJECT
+    location: US
+
+tools:
+  list_heat_tables:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >
+      Lists the tables and row counts available to the heat planner (raw campaign data in
+      a4i_climate, model outputs in a4i_ml). Use to orient before answering a data question.
+    statement: |
+      SELECT table_schema, table_id, row_count
+      FROM `PROJECT.a4i_climate.__TABLES__`
+      UNION ALL
+      SELECT table_schema, table_id, row_count
+      FROM `PROJECT.a4i_ml.__TABLES__`
+
+  city_heat_days_by_year:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >
+      Counts days per year when the city's weather stations reached at least the given
+      maximum temperature (°F), 2019-2025. Answers "how often does it get this hot?".
+      City-wide only: it says nothing about which neighborhoods are hotter.
+    parameters:
+      - name: threshold_f
+        type: float
+        description: Daily maximum temperature threshold in °F, e.g. 95 or 100.
+    statement: |
+      WITH daily AS (
+        SELECT observation_date d, MAX(max_temp_f) t
+        FROM `PROJECT.a4i_climate.station_daily_temps` GROUP BY d)
+      SELECT EXTRACT(YEAR FROM d) AS year, COUNTIF(t >= @threshold_f) AS days_at_or_above,
+             COUNT(*) AS days_reported
+      FROM daily GROUP BY year HAVING days_reported >= 300 ORDER BY year
+
+  tract_profile:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >
+      Returns the census-tract profile nearest to a coordinate: population, median age,
+      median income, poverty rate, share of households without a car. Aggregate public data.
+    parameters:
+      - name: lat
+        type: float
+        description: Latitude, decimal degrees.
+      - name: lon
+        type: float
+        description: Longitude, decimal degrees.
+    statement: |
+      SELECT geo_id, total_pop, median_age, median_income,
+             ROUND(poverty_rate, 3) AS poverty_rate, ROUND(no_vehicle_rate, 3) AS no_vehicle_rate
+      FROM `PROJECT.a4i_climate.tract_demographics`
+      ORDER BY ST_DISTANCE(ST_GEOGPOINT(@lon, @lat), ST_GEOGPOINT(tract_lon, tract_lat))
+      LIMIT 1
+
+  hottest_predicted_cells:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >
+      Lists the locations the BigQuery ML model predicts run hottest relative to the city
+      average (°F offset), from the precomputed candidate grid. Offsets, not temperatures.
+    parameters:
+      - name: limit
+        type: integer
+        description: Number of rows (max 50).
+    statement: |
+      SELECT point_id, lat, lon, predicted_offset_f, geo_id, unmeasured
+      FROM `PROJECT.a4i_ml.grid_predictions`
+      ORDER BY predicted_offset_f DESC
+      LIMIT @limit
+
+toolsets:
+  heat-planner:
+    - list_heat_tables
+    - city_heat_days_by_year
+    - tract_profile
+    - hottest_predicted_cells

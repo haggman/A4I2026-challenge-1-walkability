@@ -1,0 +1,2261 @@
+{
+  "$defs": {
+    "AuditComparisonRow": {
+      "additionalProperties": false,
+      "properties": {
+        "measure": {
+          "enum": [
+            "median_income",
+            "poverty_rate",
+            "no_vehicle_rate",
+            "share_65_plus"
+          ],
+          "title": "Measure",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "sites_value": {
+          "title": "Sites Value",
+          "type": "number"
+        },
+        "city_value": {
+          "title": "City Value",
+          "type": "number"
+        },
+        "ratio": {
+          "title": "Ratio",
+          "type": "number"
+        },
+        "higher_means_need": {
+          "default": true,
+          "title": "Higher Means Need",
+          "type": "boolean"
+        },
+        "toward_need": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Toward Need"
+        },
+        "display_sites": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Display Sites"
+        },
+        "display_city": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Display City"
+        }
+      },
+      "required": [
+        "measure",
+        "label",
+        "sites_value",
+        "city_value",
+        "ratio"
+      ],
+      "title": "AuditComparisonRow",
+      "type": "object"
+    },
+    "AuditMeasureRow": {
+      "properties": {
+        "measure": {
+          "enum": [
+            "median_income",
+            "poverty_rate",
+            "no_vehicle_rate",
+            "share_65_plus"
+          ],
+          "title": "Measure",
+          "type": "string"
+        },
+        "sites_value": {
+          "title": "Sites Value",
+          "type": "number"
+        },
+        "city_value": {
+          "title": "City Value",
+          "type": "number"
+        },
+        "ratio": {
+          "title": "Ratio",
+          "type": "number"
+        }
+      },
+      "required": [
+        "measure",
+        "sites_value",
+        "city_value",
+        "ratio"
+      ],
+      "title": "AuditMeasureRow",
+      "type": "object"
+    },
+    "AuditScatter": {
+      "additionalProperties": false,
+      "properties": {
+        "points": {
+          "items": {
+            "$ref": "#/$defs/ScatterPoint"
+          },
+          "title": "Points",
+          "type": "array"
+        },
+        "offset_split_f": {
+          "title": "Offset Split F",
+          "type": "number"
+        },
+        "vulnerability_split": {
+          "title": "Vulnerability Split",
+          "type": "number"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "points",
+        "offset_split_f",
+        "vulnerability_split"
+      ],
+      "title": "AuditScatter",
+      "type": "object"
+    },
+    "AuditSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "measures_toward_need": {
+          "title": "Measures Toward Need",
+          "type": "integer"
+        },
+        "measures_total": {
+          "title": "Measures Total",
+          "type": "integer"
+        },
+        "verdict": {
+          "title": "Verdict",
+          "type": "string"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        }
+      },
+      "required": [
+        "measures_toward_need",
+        "measures_total",
+        "verdict"
+      ],
+      "title": "AuditSummary",
+      "type": "object"
+    },
+    "CatchmentDemographics": {
+      "description": "Mirrors a4i_semantic.vulnerable_population(lat, lon, radius_m).",
+      "properties": {
+        "radius_m": {
+          "title": "Radius M",
+          "type": "number"
+        },
+        "tracts_within_radius": {
+          "title": "Tracts Within Radius",
+          "type": "integer"
+        },
+        "population_within_radius": {
+          "title": "Population Within Radius",
+          "type": "integer"
+        },
+        "pop_65_plus_within_radius": {
+          "title": "Pop 65 Plus Within Radius",
+          "type": "integer"
+        },
+        "car_free_households_within_radius": {
+          "title": "Car Free Households Within Radius",
+          "type": "integer"
+        },
+        "households_within_radius": {
+          "title": "Households Within Radius",
+          "type": "integer"
+        },
+        "share_65_plus_within_radius": {
+          "title": "Share 65 Plus Within Radius",
+          "type": "number"
+        },
+        "no_vehicle_rate_within_radius": {
+          "title": "No Vehicle Rate Within Radius",
+          "type": "number"
+        },
+        "pop_weighted_poverty_rate": {
+          "title": "Pop Weighted Poverty Rate",
+          "type": "number"
+        },
+        "tract_geo_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Tract Geo Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "radius_m",
+        "tracts_within_radius",
+        "population_within_radius",
+        "pop_65_plus_within_radius",
+        "car_free_households_within_radius",
+        "households_within_radius",
+        "share_65_plus_within_radius",
+        "no_vehicle_rate_within_radius",
+        "pop_weighted_poverty_rate"
+      ],
+      "title": "CatchmentDemographics",
+      "type": "object"
+    },
+    "ChecklistItem": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "done": {
+          "title": "Done",
+          "type": "boolean"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "label",
+        "done"
+      ],
+      "title": "ChecklistItem",
+      "type": "object"
+    },
+    "CityHeatFrequencySummary": {
+      "properties": {
+        "years": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/HeatDaysYear"
+          },
+          "title": "Years",
+          "type": "array"
+        },
+        "mean_days_ge_95_f": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean Days Ge 95 F"
+        },
+        "ols_slope_days_ge_95_per_yr": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ols Slope Days Ge 95 Per Yr"
+        },
+        "caveat": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Caveat"
+        }
+      },
+      "title": "CityHeatFrequencySummary",
+      "type": "object"
+    },
+    "CompareBar": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "site_value": {
+          "title": "Site Value",
+          "type": "number"
+        },
+        "city_value": {
+          "title": "City Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "label",
+        "site_value",
+        "city_value"
+      ],
+      "title": "CompareBar",
+      "type": "object"
+    },
+    "DataResult": {
+      "properties": {
+        "status": {
+          "enum": [
+            "ok",
+            "no_data",
+            "out_of_scope",
+            "needs_clarification",
+            "error"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "intent_type": {
+          "title": "Intent Type",
+          "type": "string"
+        },
+        "rows": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Rows",
+          "type": "array"
+        },
+        "summary_metrics": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Summary Metrics",
+          "type": "object"
+        },
+        "provenance": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Provenance"
+          },
+          "title": "Provenance",
+          "type": "array"
+        },
+        "error_message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Message"
+        }
+      },
+      "required": [
+        "status",
+        "intent_type"
+      ],
+      "title": "DataResult",
+      "type": "object"
+    },
+    "Driver": {
+      "description": "One ML.EXPLAIN_PREDICT attribution, already in planner English.",
+      "properties": {
+        "feature": {
+          "title": "Feature",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "attribution_f": {
+          "title": "Attribution F",
+          "type": "number"
+        }
+      },
+      "required": [
+        "feature",
+        "label",
+        "attribution_f"
+      ],
+      "title": "Driver",
+      "type": "object"
+    },
+    "DriverBar": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "attribution_f": {
+          "title": "Attribution F",
+          "type": "number"
+        },
+        "effect": {
+          "enum": [
+            "adds_heat",
+            "reduces_heat"
+          ],
+          "title": "Effect",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "attribution_f",
+        "effect"
+      ],
+      "title": "DriverBar",
+      "type": "object"
+    },
+    "EquityAudit": {
+      "properties": {
+        "site_geo_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Site Geo Ids",
+          "type": "array"
+        },
+        "residents_in_site_tracts": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Residents In Site Tracts"
+        },
+        "measures": {
+          "items": {
+            "$ref": "#/$defs/AuditMeasureRow"
+          },
+          "title": "Measures",
+          "type": "array"
+        },
+        "verdict": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verdict"
+        },
+        "racial_composition": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/RacialCompositionRow"
+          },
+          "title": "Racial Composition",
+          "type": "array"
+        },
+        "provenance_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Provenance Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "site_geo_ids",
+        "measures"
+      ],
+      "title": "EquityAudit",
+      "type": "object"
+    },
+    "GeoJSONFeatureCollection": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "FeatureCollection",
+          "default": "FeatureCollection",
+          "title": "Type",
+          "type": "string"
+        },
+        "features": {
+          "items": {
+            "$ref": "#/$defs/MapFeature"
+          },
+          "title": "Features",
+          "type": "array"
+        }
+      },
+      "required": [
+        "features"
+      ],
+      "title": "GeoJSONFeatureCollection",
+      "type": "object"
+    },
+    "HeatDaysYear": {
+      "properties": {
+        "year": {
+          "title": "Year",
+          "type": "integer"
+        },
+        "days_ge_90_f": {
+          "title": "Days Ge 90 F",
+          "type": "integer"
+        },
+        "days_ge_95_f": {
+          "title": "Days Ge 95 F",
+          "type": "integer"
+        },
+        "days_ge_100_f": {
+          "title": "Days Ge 100 F",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "year",
+        "days_ge_90_f",
+        "days_ge_95_f",
+        "days_ge_100_f"
+      ],
+      "title": "HeatDaysYear",
+      "type": "object"
+    },
+    "Intent": {
+      "properties": {
+        "schema_version": {
+          "default": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "intent_type": {
+          "enum": [
+            "site_selection",
+            "explain_location",
+            "compare_sites",
+            "heat_frequency",
+            "demographics",
+            "draft_proposal",
+            "equity_audit",
+            "generic_data",
+            "out_of_scope"
+          ],
+          "title": "Intent Type",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "no_data",
+            "out_of_scope",
+            "needs_clarification",
+            "error"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "locations": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/LocationRef"
+          },
+          "title": "Locations",
+          "type": "array"
+        },
+        "candidate_ranks": {
+          "default": [],
+          "items": {
+            "type": "integer"
+          },
+          "title": "Candidate Ranks",
+          "type": "array"
+        },
+        "k": {
+          "default": 3,
+          "title": "K",
+          "type": "integer"
+        },
+        "radius_m": {
+          "default": 800.0,
+          "title": "Radius M",
+          "type": "number"
+        },
+        "min_spacing_m": {
+          "default": 2000.0,
+          "title": "Min Spacing M",
+          "type": "number"
+        },
+        "threshold_f": {
+          "default": 95.0,
+          "title": "Threshold F",
+          "type": "number"
+        },
+        "forecast_high_f": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Forecast High F"
+        },
+        "unmeasured_only": {
+          "default": false,
+          "title": "Unmeasured Only",
+          "type": "boolean"
+        },
+        "missing_parameters": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Parameters",
+          "type": "array"
+        },
+        "clarifying_question": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Clarifying Question"
+        },
+        "refusal_reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "other_city",
+                "outside_footprint",
+                "intervention_simulation",
+                "race_targeting",
+                "weather_forecast",
+                "other"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Refusal Reason"
+        },
+        "refusal_explanation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Refusal Explanation"
+        }
+      },
+      "required": [
+        "intent_type",
+        "status"
+      ],
+      "title": "Intent",
+      "type": "object"
+    },
+    "LocationRef": {
+      "properties": {
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "lat": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lat"
+        },
+        "lon": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lon"
+        },
+        "geo_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Geo Id"
+        }
+      },
+      "title": "LocationRef",
+      "type": "object"
+    },
+    "MapFeature": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "Feature",
+          "default": "Feature",
+          "title": "Type",
+          "type": "string"
+        },
+        "geometry": {
+          "additionalProperties": true,
+          "title": "Geometry",
+          "type": "object"
+        },
+        "properties": {
+          "$ref": "#/$defs/MapFeatureProperties"
+        }
+      },
+      "required": [
+        "geometry",
+        "properties"
+      ],
+      "title": "MapFeature",
+      "type": "object"
+    },
+    "MapFeatureProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "feature_type": {
+          "enum": [
+            "recommended_site",
+            "runner_up_site",
+            "catchment",
+            "tract",
+            "grid_cell"
+          ],
+          "title": "Feature Type",
+          "type": "string"
+        },
+        "rank": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rank"
+        },
+        "geo_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Geo Id"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "predicted_offset_f": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Predicted Offset F"
+        },
+        "unmeasured": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unmeasured"
+        },
+        "radius_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Radius M"
+        },
+        "no_vehicle_rate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "No Vehicle Rate"
+        },
+        "share_65_plus": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Share 65 Plus"
+        }
+      },
+      "required": [
+        "feature_type"
+      ],
+      "title": "MapFeatureProperties",
+      "type": "object"
+    },
+    "PlacementRecommendation": {
+      "properties": {
+        "city": {
+          "default": "Atlanta",
+          "title": "City",
+          "type": "string"
+        },
+        "track": {
+          "default": "budget",
+          "title": "Track",
+          "type": "string"
+        },
+        "scenario": {
+          "title": "Scenario",
+          "type": "string"
+        },
+        "forecast_high_f": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Forecast High F"
+        },
+        "campaign_mean_f": {
+          "default": 82.062,
+          "title": "Campaign Mean F",
+          "type": "number"
+        },
+        "sites": {
+          "items": {
+            "$ref": "#/$defs/SiteAssessment"
+          },
+          "title": "Sites",
+          "type": "array"
+        },
+        "runner_up_sites": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SiteAssessment"
+          },
+          "title": "Runner Up Sites",
+          "type": "array"
+        },
+        "heat_frequency": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CityHeatFrequencySummary"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "equity_audit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EquityAudit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "proposal_markdown": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Proposal Markdown"
+        },
+        "proposal_sections": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "propertyNames": {
+            "enum": [
+              "why_these",
+              "what_this_displaces"
+            ]
+          },
+          "title": "Proposal Sections",
+          "type": "object"
+        },
+        "limitations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "model_version": {
+          "default": "offset_model_v1",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scenario",
+        "sites",
+        "generated_at"
+      ],
+      "title": "PlacementRecommendation",
+      "type": "object"
+    },
+    "ProposalDoc": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "to": {
+          "default": "Atlanta City Council",
+          "title": "To",
+          "type": "string"
+        },
+        "from": {
+          "default": "[Department / office]",
+          "title": "From",
+          "type": "string"
+        },
+        "date": {
+          "default": "[Date]",
+          "title": "Date",
+          "type": "string"
+        },
+        "recommendation": {
+          "title": "Recommendation",
+          "type": "string"
+        },
+        "sites": {
+          "items": {
+            "$ref": "#/$defs/ProposalSiteRow"
+          },
+          "title": "Sites",
+          "type": "array"
+        },
+        "why_these": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Why These"
+        },
+        "what_this_displaces": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "What This Displaces"
+        },
+        "equity_check": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Equity Check"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "source_badges": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Badges",
+          "type": "array"
+        },
+        "checklist": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ChecklistItem"
+          },
+          "title": "Checklist",
+          "type": "array"
+        },
+        "status_line": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Status Line"
+        }
+      },
+      "required": [
+        "title",
+        "recommendation",
+        "sites",
+        "why_these",
+        "what_this_displaces",
+        "equity_check",
+        "limitations"
+      ],
+      "title": "ProposalDoc",
+      "type": "object"
+    },
+    "ProposalSiteRow": {
+      "additionalProperties": false,
+      "properties": {
+        "rank": {
+          "title": "Rank",
+          "type": "integer"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "location": {
+          "title": "Location",
+          "type": "string"
+        },
+        "offset": {
+          "title": "Offset",
+          "type": "string"
+        },
+        "hot_days_ge_95": {
+          "title": "Hot Days Ge 95",
+          "type": "string"
+        },
+        "nearby": {
+          "title": "Nearby",
+          "type": "string"
+        },
+        "cost": {
+          "default": "[COST]",
+          "title": "Cost",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rank",
+        "name",
+        "location",
+        "offset",
+        "hot_days_ge_95",
+        "nearby"
+      ],
+      "title": "ProposalSiteRow",
+      "type": "object"
+    },
+    "Provenance": {
+      "properties": {
+        "provenance_id": {
+          "title": "Provenance Id",
+          "type": "string"
+        },
+        "tool_name": {
+          "title": "Tool Name",
+          "type": "string"
+        },
+        "mcp_tool_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mcp Tool Name"
+        },
+        "source_type": {
+          "enum": [
+            "mcp_toolbox",
+            "session_state"
+          ],
+          "title": "Source Type",
+          "type": "string"
+        },
+        "sql_object": {
+          "title": "Sql Object",
+          "type": "string"
+        },
+        "parameters": {
+          "additionalProperties": true,
+          "default": {},
+          "title": "Parameters",
+          "type": "object"
+        },
+        "model_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "offset_model_v1",
+          "title": "Model Version"
+        },
+        "timestamp_utc": {
+          "title": "Timestamp Utc",
+          "type": "string"
+        },
+        "row_count": {
+          "title": "Row Count",
+          "type": "integer"
+        },
+        "latency_ms": {
+          "title": "Latency Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "provenance_id",
+        "tool_name",
+        "source_type",
+        "sql_object",
+        "timestamp_utc",
+        "row_count",
+        "latency_ms"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "RacialCompositionRow": {
+      "description": "Post-hoc output check only (sql/audit/audit.sql). Never a model or ranking input.",
+      "properties": {
+        "group": {
+          "title": "Group",
+          "type": "string"
+        },
+        "sites_share": {
+          "title": "Sites Share",
+          "type": "number"
+        },
+        "city_share": {
+          "title": "City Share",
+          "type": "number"
+        }
+      },
+      "required": [
+        "group",
+        "sites_share",
+        "city_share"
+      ],
+      "title": "RacialCompositionRow",
+      "type": "object"
+    },
+    "RankedSiteRow": {
+      "additionalProperties": false,
+      "properties": {
+        "rank": {
+          "title": "Rank",
+          "type": "integer"
+        },
+        "neighborhood": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Neighborhood"
+        },
+        "geo_id": {
+          "title": "Geo Id",
+          "type": "string"
+        },
+        "predicted_offset_f": {
+          "title": "Predicted Offset F",
+          "type": "number"
+        },
+        "unmeasured": {
+          "title": "Unmeasured",
+          "type": "boolean"
+        },
+        "no_vehicle_rate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "No Vehicle Rate"
+        },
+        "share_65_plus": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Share 65 Plus"
+        },
+        "poverty_rate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Poverty Rate"
+        },
+        "priority_score": {
+          "title": "Priority Score",
+          "type": "number"
+        },
+        "lat": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lat"
+        },
+        "lon": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lon"
+        },
+        "residents_reached": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Residents Reached"
+        },
+        "hot_days_ge_95": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hot Days Ge 95"
+        },
+        "funded": {
+          "default": true,
+          "title": "Funded",
+          "type": "boolean"
+        },
+        "passed_over_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Passed Over Reason"
+        }
+      },
+      "required": [
+        "rank",
+        "neighborhood",
+        "geo_id",
+        "predicted_offset_f",
+        "unmeasured",
+        "no_vehicle_rate",
+        "share_65_plus",
+        "poverty_rate",
+        "priority_score"
+      ],
+      "title": "RankedSiteRow",
+      "type": "object"
+    },
+    "ScatterPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "geo_id": {
+          "title": "Geo Id",
+          "type": "string"
+        },
+        "predicted_offset_f": {
+          "title": "Predicted Offset F",
+          "type": "number"
+        },
+        "vulnerability": {
+          "title": "Vulnerability",
+          "type": "number"
+        },
+        "site_rank": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Site Rank"
+        },
+        "funded": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Funded"
+        }
+      },
+      "required": [
+        "geo_id",
+        "predicted_offset_f",
+        "vulnerability"
+      ],
+      "title": "ScatterPoint",
+      "type": "object"
+    },
+    "SiteAssessment": {
+      "properties": {
+        "rank": {
+          "title": "Rank",
+          "type": "integer"
+        },
+        "site_id": {
+          "title": "Site Id",
+          "type": "string"
+        },
+        "lat": {
+          "title": "Lat",
+          "type": "number"
+        },
+        "lon": {
+          "title": "Lon",
+          "type": "number"
+        },
+        "address_hint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Address Hint"
+        },
+        "geo_id": {
+          "title": "Geo Id",
+          "type": "string"
+        },
+        "predicted_offset_f": {
+          "title": "Predicted Offset F",
+          "type": "number"
+        },
+        "implied_local_high_f": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Implied Local High F"
+        },
+        "unmeasured": {
+          "title": "Unmeasured",
+          "type": "boolean"
+        },
+        "drivers": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Driver"
+          },
+          "title": "Drivers",
+          "type": "array"
+        },
+        "catchment": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CatchmentDemographics"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "hot_days": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SiteHotDays"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "priority_score": {
+          "title": "Priority Score",
+          "type": "number"
+        },
+        "why": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Why"
+        },
+        "provenance_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Provenance Ids",
+          "type": "array"
+        },
+        "tract_no_vehicle_rate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tract No Vehicle Rate"
+        },
+        "tract_share_65_plus": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tract Share 65 Plus"
+        },
+        "tract_poverty_rate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tract Poverty Rate"
+        },
+        "passed_over_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Passed Over Reason"
+        }
+      },
+      "required": [
+        "rank",
+        "site_id",
+        "lat",
+        "lon",
+        "geo_id",
+        "predicted_offset_f",
+        "unmeasured",
+        "priority_score"
+      ],
+      "title": "SiteAssessment",
+      "type": "object"
+    },
+    "SiteComparison": {
+      "additionalProperties": false,
+      "description": "P4 \"Why not site 4?\": the last funded site vs. the first runner-up.",
+      "properties": {
+        "funded_rank": {
+          "title": "Funded Rank",
+          "type": "integer"
+        },
+        "runner_up_rank": {
+          "title": "Runner Up Rank",
+          "type": "integer"
+        },
+        "rows": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Rows",
+          "type": "array"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "funded_rank",
+        "runner_up_rank",
+        "rows",
+        "reason"
+      ],
+      "title": "SiteComparison",
+      "type": "object"
+    },
+    "SiteDetail": {
+      "additionalProperties": false,
+      "description": "P4 Sites screen: the cards beside the waterfall for one site.",
+      "properties": {
+        "rank": {
+          "title": "Rank",
+          "type": "integer"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "lat": {
+          "title": "Lat",
+          "type": "number"
+        },
+        "lon": {
+          "title": "Lon",
+          "type": "number"
+        },
+        "geo_id": {
+          "title": "Geo Id",
+          "type": "string"
+        },
+        "hot_days_ge_95": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hot Days Ge 95"
+        },
+        "city_hot_days_ge_95": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "City Hot Days Ge 95"
+        },
+        "residents_nearby": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Residents Nearby"
+        },
+        "radius_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Radius M"
+        },
+        "cost_label": {
+          "default": "[COST]",
+          "title": "Cost Label",
+          "type": "string"
+        },
+        "who_lives_here": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/CompareBar"
+          },
+          "title": "Who Lives Here",
+          "type": "array"
+        },
+        "diagnosis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Diagnosis"
+        },
+        "maps_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maps Url"
+        },
+        "walking_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Walking Url"
+        }
+      },
+      "required": [
+        "rank",
+        "title",
+        "lat",
+        "lon",
+        "geo_id",
+        "hot_days_ge_95",
+        "city_hot_days_ge_95",
+        "residents_nearby",
+        "radius_m"
+      ],
+      "title": "SiteDetail",
+      "type": "object"
+    },
+    "SiteDriverBars": {
+      "additionalProperties": false,
+      "properties": {
+        "rank": {
+          "title": "Rank",
+          "type": "integer"
+        },
+        "bars": {
+          "items": {
+            "$ref": "#/$defs/DriverBar"
+          },
+          "title": "Bars",
+          "type": "array"
+        },
+        "site_offset_f": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Site Offset F"
+        },
+        "dominant_driver": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dominant Driver"
+        }
+      },
+      "required": [
+        "rank",
+        "bars"
+      ],
+      "title": "SiteDriverBars",
+      "type": "object"
+    },
+    "SiteHotDays": {
+      "description": "Mirrors a4i_semantic.site_hot_days(offset_f).",
+      "properties": {
+        "offset_f": {
+          "title": "Offset F",
+          "type": "number"
+        },
+        "mean_days_ge_95f_equiv_per_yr": {
+          "title": "Mean Days Ge 95F Equiv Per Yr",
+          "type": "number"
+        },
+        "city_baseline_days_ge_95f_per_yr": {
+          "title": "City Baseline Days Ge 95F Per Yr",
+          "type": "number"
+        },
+        "extra_days_ge_95f_equiv_per_yr": {
+          "title": "Extra Days Ge 95F Equiv Per Yr",
+          "type": "number"
+        },
+        "mean_days_ge_90f_equiv_per_yr": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean Days Ge 90F Equiv Per Yr"
+        },
+        "mean_days_ge_100f_equiv_per_yr": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean Days Ge 100F Equiv Per Yr"
+        },
+        "full_years_counted": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Full Years Counted"
+        }
+      },
+      "required": [
+        "offset_f",
+        "mean_days_ge_95f_equiv_per_yr",
+        "city_baseline_days_ge_95f_per_yr",
+        "extra_days_ge_95f_equiv_per_yr"
+      ],
+      "title": "SiteHotDays",
+      "type": "object"
+    },
+    "VerificationReport": {
+      "properties": {
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "ungrounded_numbers": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Ungrounded Numbers",
+          "type": "array"
+        },
+        "framing_violations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Framing Violations",
+          "type": "array"
+        },
+        "retries": {
+          "default": 0,
+          "title": "Retries",
+          "type": "integer"
+        },
+        "fallback_used": {
+          "default": false,
+          "title": "Fallback Used",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "passed"
+      ],
+      "title": "VerificationReport",
+      "type": "object"
+    },
+    "VizSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "default": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "primary_view": {
+          "enum": [
+            "map_and_table",
+            "comparison_view",
+            "driver_breakdown",
+            "hot_days_chart",
+            "equity_audit_table",
+            "proposal_document",
+            "empty"
+          ],
+          "title": "Primary View",
+          "type": "string"
+        },
+        "map_geojson": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GeoJSONFeatureCollection"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "ranked_table": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/RankedSiteRow"
+          },
+          "title": "Ranked Table",
+          "type": "array"
+        },
+        "driver_bars": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SiteDriverBars"
+          },
+          "title": "Driver Bars",
+          "type": "array"
+        },
+        "vega_lite_spec": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vega Lite Spec"
+        },
+        "audit_table": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/AuditComparisonRow"
+          },
+          "title": "Audit Table",
+          "type": "array"
+        },
+        "site_details": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SiteDetail"
+          },
+          "title": "Site Details",
+          "type": "array"
+        },
+        "comparison": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SiteComparison"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "audit_summary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AuditSummary"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "audit_scatter": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AuditScatter"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "racial_composition": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/RacialCompositionRow"
+          },
+          "title": "Racial Composition",
+          "type": "array"
+        },
+        "proposal": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProposalDoc"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "limitations": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        },
+        "mock": {
+          "default": false,
+          "title": "Mock",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "primary_view"
+      ],
+      "title": "VizSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "AgentApiResponse plus the VizSpec heat-ui built from it.",
+  "properties": {
+    "schema_version": {
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "trace_id": {
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ok",
+        "no_data",
+        "out_of_scope",
+        "needs_clarification",
+        "error"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "intent": {
+      "$ref": "#/$defs/Intent"
+    },
+    "data_result": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DataResult"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "recommendation": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PlacementRecommendation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "narrative": {
+      "title": "Narrative",
+      "type": "string"
+    },
+    "citations": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Provenance"
+      },
+      "title": "Citations",
+      "type": "array"
+    },
+    "verification": {
+      "$ref": "#/$defs/VerificationReport"
+    },
+    "total_latency_ms": {
+      "title": "Total Latency Ms",
+      "type": "integer"
+    },
+    "error_message": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Message"
+    },
+    "viz_spec": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/VizSpec"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "trace_id",
+    "status",
+    "intent",
+    "narrative",
+    "verification",
+    "total_latency_ms"
+  ],
+  "title": "FinalResponse",
+  "type": "object"
+}

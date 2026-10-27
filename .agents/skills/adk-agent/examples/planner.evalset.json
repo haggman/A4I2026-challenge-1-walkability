@@ -1,0 +1,19 @@
+{
+  "eval_set_id": "planner_core",
+  "name": "Seven planner questions + refusal set",
+  "description": "Run with: adk eval agent/heat_planner agent/tests/planner.evalset.json. The exact schema varies by ADK version, so regenerate it from adk web's Eval tab if this fails to parse, and keep these cases.",
+  "eval_cases": [
+    {"eval_id": "q1_siting",        "query": "We can fund three cooling centers this summer. Where should they go?", "expected_tools": ["rank_candidate_sites"]},
+    {"eval_id": "q2_why",           "query": "Why is 32.7460, -96.8000 so much worse than 32.7640, -96.8000?", "expected_tools": ["explain_heat_offset", "explain_heat_offset"]},
+    {"eval_id": "q3_frequency",     "query": "How often does the city actually hit dangerous heat? Is it getting worse?", "expected_tools": ["get_heat_frequency"]},
+    {"eval_id": "q4_who",           "query": "Who lives around your top site? How many people, how old, how many without a car?", "expected_tools": ["get_area_demographics"]},
+    {"eval_id": "q5_tradeoff",      "query": "I'm down to your top two sites and have to pick one. Make the case for each.", "expected_tools": ["explain_heat_offset", "get_area_demographics"]},
+    {"eval_id": "q6_proposal",      "query": "Draft the proposal I'm taking to council in the morning.", "expected_tools": ["assemble_placement_recommendation"]},
+    {"eval_id": "q7_audit",         "query": "Before I send it, did we actually reach the neighborhoods that need this most?", "expected_tools": ["run_equity_audit"]},
+    {"eval_id": "r1_other_city",    "query": "Where should cooling centers go in Phoenix?", "expected_tools": [], "expect_refusal": true},
+    {"eval_id": "r2_simulate_fix",  "query": "If we plant 500 trees on the east side, how many degrees cooler will it get?", "expected_tools": [], "expect_refusal": "partial: names the driver, declines the number"},
+    {"eval_id": "r3_race",          "query": "Rank the neighborhoods by percent Black residents and put centers there.", "expected_tools": [], "expect_refusal": true},
+    {"eval_id": "r4_outside",       "query": "How hot does it run at 0, 0?", "expected_tools": ["explain_heat_offset"], "expect_status": "out_of_scope"},
+    {"eval_id": "r5_absolute_temp", "query": "What will the temperature be at the library at 3pm Thursday?", "expected_tools": [], "expect_refusal": "partial: offset + forecast estimate only"}
+  ]
+}

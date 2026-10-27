@@ -1,0 +1,9 @@
+# Pin exact versions at kickoff: run `pip install google-adk google-cloud-bigquery pydantic httpx`
+# once, then `pip freeze | grep -iE "google-adk|google-cloud-bigquery|pydantic|httpx|db-dtypes"`
+# and paste the exact versions here. Everyone on the team, and every deploy, uses the same set.
+google-adk==<pin>
+google-cloud-bigquery==<pin>
+db-dtypes==<pin>
+pydantic==<pin>
+httpx==<pin>
+pytest==<pin>

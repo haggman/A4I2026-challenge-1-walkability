@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Heat Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23FB923C'/%3E%3Cpath d='M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z' fill='none' stroke='%230B1620' stroke-width='2'/%3E%3C/svg%3E">
+</head>
+<body>
+  <a class="skip" href="#askInput">Skip to the question box</a>
+
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg></span>
+      <div>
+        <strong id="brandName">Heat Planner</strong>
+        <small>Internal city planning tool</small>
+      </div>
+    </div>
+
+    <div class="city">
+      <button id="cityBtn" class="city-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="cityMenu">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <span>City: <span id="cityName">Atlanta</span></span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div id="cityMenu" class="menu" hidden></div>
+    </div>
+
+    <nav class="pages" aria-label="Pages">
+      <a href="#ask" data-page="ask">Ask</a>
+      <a href="#sites" data-page="sites">Sites</a>
+      <a href="#audit" data-page="audit">Equity audit</a>
+      <a href="#proposal" data-page="proposal">Proposal</a>
+    </nav>
+
+    <p class="status" role="status"><span id="statusDot" class="dot"></span><span id="statusText">Connecting</span></p>
+  </header>
+
+  <p id="mockBanner" class="banner" hidden>Mock data for UI development: every number on this screen comes from a sample payload, not the agent API.</p>
+
+  <!-- Ask -->
+  <section id="page-ask" class="page" data-page="ask" aria-label="Ask">
+    <div class="scenario">
+      <span>Scenario</span>
+      <strong id="scenarioText">Fund permanent cooling centers · council vote in 3 weeks</strong>
+      <span class="chip">Heat Watch · 1 campaign day</span>
+      <span class="chip">Stations · 7 yrs</span>
+      <span class="chip">ACS tracts</span>
+    </div>
+    <main class="layout">
+      <section class="chat" aria-label="Conversation with the planner">
+        <div id="messages" class="messages"></div>
+        <div class="suggest" id="suggest" aria-label="Suggested questions"></div>
+        <form id="askForm" class="ask">
+          <label for="askInput">Ask the planner</label>
+          <div class="askrow">
+            <input id="askInput" type="text" autocomplete="off" maxlength="2000" placeholder="e.g. What’s near Peachtree and 10th?">
+            <button id="askBtn" type="submit" class="primary">Send</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="mapcol card" aria-label="Map">
+        <div class="maphead">
+          <div>
+            <h1 id="mapTitle">Atlanta · predicted heat offset by tract</h1>
+            <p class="sub" id="mapSub">How much hotter each tract runs than the city average on the campaign day</p>
+          </div>
+          <div class="seg" role="group" aria-label="Map layer">
+            <button type="button" data-layer="predicted_offset_f" aria-pressed="true">Heat offset</button>
+            <button type="button" data-layer="no_vehicle_rate" aria-pressed="false">No car</button>
+            <button type="button" data-layer="share_65_plus" aria-pressed="false">Age 65+</button>
+          </div>
+        </div>
+        <div class="mapwrap">
+          <div id="map" class="map" role="region" aria-label="Map of tracts and recommended sites"></div>
+          <div class="zoom" id="zoomCtl" hidden>
+            <button type="button" id="zoomIn" aria-label="Zoom in">+</button>
+            <button type="button" id="zoomOut" aria-label="Zoom out">−</button>
+          </div>
+          <p class="mapnote left">Dashed ring = straight-line reach</p>
+          <p class="mapnote right" id="mapSource">Tracts: Census TIGER/Line</p>
+          <div id="mapOverlay" class="overlay" hidden></div>
+          <div id="tractCard" class="tractcard" hidden></div>
+        </div>
+        <div class="mapfoot">
+          <div class="legend" id="legend" aria-label="Map legend"></div>
+          <div class="budget">
+            <span id="countLabel">Centers to fund</span>
+            <div class="stepper" role="group" aria-labelledby="countLabel">
+              <button id="dec" type="button" aria-label="Fund one fewer center">−</button>
+              <output id="count" aria-live="polite">3</output>
+              <button id="inc" type="button" aria-label="Fund one more center">+</button>
+            </div>
+            <span class="pips" id="countPips" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div id="siteCard" class="sitecard" hidden></div>
+      </section>
+    </main>
+  </section>
+
+  <!-- Sites -->
+  <section id="page-sites" class="page wide" data-page="sites" aria-labelledby="sitesTitle" hidden>
+    <div class="pagehead">
+      <div>
+        <h1 id="sitesTitle">Why each site runs hot</h1>
+        <p class="sub">Each bar is one feature’s contribution from the model’s attributions, stacked from Atlanta’s average up to the site’s offset.</p>
+      </div>
+      <div class="site-picker" id="sitePicker" role="group" aria-label="Choose a site"></div>
+    </div>
+    <div id="sitesBody"></div>
+  </section>
+
+  <!-- Equity audit -->
+  <section id="page-audit" class="page wide" data-page="audit" aria-labelledby="auditTitle" hidden>
+    <div class="pagehead">
+      <div>
+        <h1 id="auditTitle">Did our sites land where heat hurts most?</h1>
+        <p class="sub">Being hot isn’t the same as being at risk. We check every recommendation against who actually lives there. Race was never a model input; it appears only as a check on the output.</p>
+      </div>
+    </div>
+    <div id="auditBody"></div>
+  </section>
+
+  <!-- Proposal -->
+  <section id="page-proposal" class="page wide" data-page="proposal" aria-label="Council proposal" hidden>
+    <div id="proposalBody"></div>
+  </section>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

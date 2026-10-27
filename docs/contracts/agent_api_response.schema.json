@@ -1,0 +1,951 @@
+{
+  "$defs": {
+    "CatchmentDemographics": {
+      "additionalProperties": false,
+      "properties": {
+        "geo_id": {
+          "title": "Geo Id",
+          "type": "string"
+        },
+        "radius_m": {
+          "default": 800.0,
+          "title": "Radius M",
+          "type": "number"
+        },
+        "tract_count": {
+          "default": 1,
+          "title": "Tract Count",
+          "type": "integer"
+        },
+        "tract_geo_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tract Geo Ids",
+          "type": "array"
+        },
+        "total_pop": {
+          "default": 0,
+          "title": "Total Pop",
+          "type": "integer"
+        },
+        "pop_65_plus": {
+          "default": 0,
+          "title": "Pop 65 Plus",
+          "type": "integer"
+        },
+        "share_65_plus": {
+          "default": 0.0,
+          "title": "Share 65 Plus",
+          "type": "number"
+        },
+        "households": {
+          "default": 0,
+          "title": "Households",
+          "type": "integer"
+        },
+        "car_free_households": {
+          "default": 0,
+          "title": "Car Free Households",
+          "type": "integer"
+        },
+        "no_vehicle_rate": {
+          "default": 0.0,
+          "title": "No Vehicle Rate",
+          "type": "number"
+        },
+        "poverty_rate": {
+          "default": 0.0,
+          "title": "Poverty Rate",
+          "type": "number"
+        },
+        "median_income": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Median Income"
+        }
+      },
+      "required": [
+        "geo_id"
+      ],
+      "title": "CatchmentDemographics",
+      "type": "object"
+    },
+    "CityHeatFrequencySummary": {
+      "additionalProperties": false,
+      "properties": {
+        "years_covered": {
+          "default": "2019-2025",
+          "title": "Years Covered",
+          "type": "string"
+        },
+        "full_years_count": {
+          "default": 7,
+          "title": "Full Years Count",
+          "type": "integer"
+        },
+        "avg_days_ge_90f": {
+          "default": 78.0,
+          "title": "Avg Days Ge 90F",
+          "type": "number"
+        },
+        "avg_days_ge_95f": {
+          "default": 23.9,
+          "title": "Avg Days Ge 95F",
+          "type": "number"
+        },
+        "avg_days_ge_100f": {
+          "default": 1.6,
+          "title": "Avg Days Ge 100F",
+          "type": "number"
+        },
+        "hottest_temp_recorded_f": {
+          "default": 104.0,
+          "title": "Hottest Temp Recorded F",
+          "type": "number"
+        },
+        "trend_days_per_decade": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trend Days Per Decade"
+        },
+        "by_year": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "By Year",
+          "type": "array"
+        }
+      },
+      "title": "CityHeatFrequencySummary",
+      "type": "object"
+    },
+    "DataResult": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "default": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "success",
+            "out_of_scope",
+            "not_found",
+            "no_data",
+            "needs_clarification",
+            "refused",
+            "error"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "intent_type": {
+          "enum": [
+            "site_selection",
+            "explain_location",
+            "compare_sites",
+            "heat_frequency",
+            "demographics",
+            "equity_audit",
+            "out_of_scope_city",
+            "causal_simulation",
+            "future_forecast",
+            "race_in_model",
+            "ambiguous_prompt"
+          ],
+          "title": "Intent Type",
+          "type": "string"
+        },
+        "sites": {
+          "items": {
+            "$ref": "#/$defs/SiteAssessment"
+          },
+          "title": "Sites",
+          "type": "array"
+        },
+        "runner_up_sites": {
+          "items": {
+            "$ref": "#/$defs/SiteAssessment"
+          },
+          "title": "Runner Up Sites",
+          "type": "array"
+        },
+        "comparison_table": {
+          "anyOf": [
+            {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Comparison Table"
+        },
+        "heat_frequency": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CityHeatFrequencySummary"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "equity_audit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EquityAudit"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "recommendation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PlacementRecommendation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "provenance": {
+          "items": {
+            "$ref": "#/$defs/Provenance"
+          },
+          "title": "Provenance",
+          "type": "array"
+        },
+        "error_message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Message"
+        }
+      },
+      "required": [
+        "status",
+        "intent_type"
+      ],
+      "title": "DataResult",
+      "type": "object"
+    },
+    "Driver": {
+      "additionalProperties": false,
+      "properties": {
+        "feature": {
+          "description": "Feature column name from point_features().",
+          "title": "Feature",
+          "type": "string"
+        },
+        "attribution": {
+          "description": "Signed \u00b0F contribution from ML.EXPLAIN_PREDICT vs. baseline.",
+          "title": "Attribution",
+          "type": "number"
+        }
+      },
+      "required": [
+        "feature",
+        "attribution"
+      ],
+      "title": "Driver",
+      "type": "object"
+    },
+    "EquityAudit": {
+      "additionalProperties": false,
+      "properties": {
+        "site_geo_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Site Geo Ids",
+          "type": "array"
+        },
+        "metrics": {
+          "items": {
+            "$ref": "#/$defs/EquityAuditMetricRow"
+          },
+          "title": "Metrics",
+          "type": "array"
+        },
+        "ratios": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Ratios",
+          "type": "object"
+        },
+        "deltas": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Deltas",
+          "type": "object"
+        },
+        "passes_equity_check": {
+          "title": "Passes Equity Check",
+          "type": "boolean"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "site_geo_ids",
+        "metrics",
+        "ratios",
+        "deltas",
+        "passes_equity_check",
+        "summary"
+      ],
+      "title": "EquityAudit",
+      "type": "object"
+    },
+    "EquityAuditMetricRow": {
+      "additionalProperties": false,
+      "properties": {
+        "metric": {
+          "title": "Metric",
+          "type": "string"
+        },
+        "recommended_sites": {
+          "title": "Recommended Sites",
+          "type": "number"
+        },
+        "city_overall": {
+          "title": "City Overall",
+          "type": "number"
+        },
+        "ratio_rec_to_city": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ratio Rec To City"
+        }
+      },
+      "required": [
+        "metric",
+        "recommended_sites",
+        "city_overall"
+      ],
+      "title": "EquityAuditMetricRow",
+      "type": "object"
+    },
+    "Intent": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "default": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "intent_type": {
+          "enum": [
+            "site_selection",
+            "explain_location",
+            "compare_sites",
+            "heat_frequency",
+            "demographics",
+            "equity_audit",
+            "out_of_scope_city",
+            "causal_simulation",
+            "future_forecast",
+            "race_in_model",
+            "ambiguous_prompt"
+          ],
+          "title": "Intent Type",
+          "type": "string"
+        },
+        "city": {
+          "default": "Atlanta",
+          "title": "City",
+          "type": "string"
+        },
+        "location_query": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location Query"
+        },
+        "lat": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lat"
+        },
+        "lon": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lon"
+        },
+        "k_sites": {
+          "default": 3,
+          "maximum": 10,
+          "minimum": 1,
+          "title": "K Sites",
+          "type": "integer"
+        },
+        "min_spacing_m": {
+          "default": 2000,
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Min Spacing M",
+          "type": "integer"
+        },
+        "radius_m": {
+          "default": 800.0,
+          "maximum": 5000.0,
+          "minimum": 100.0,
+          "title": "Radius M",
+          "type": "number"
+        },
+        "forecast_high_f": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Forecast High F"
+        },
+        "unmeasured_only": {
+          "default": false,
+          "title": "Unmeasured Only",
+          "type": "boolean"
+        },
+        "compared_ranks": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Compared Ranks",
+          "type": "array"
+        },
+        "missing_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Fields",
+          "type": "array"
+        },
+        "clarification_question": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Clarification Question"
+        },
+        "refusal_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Refusal Reason"
+        }
+      },
+      "required": [
+        "intent_type"
+      ],
+      "title": "Intent",
+      "type": "object"
+    },
+    "PlacementRecommendation": {
+      "additionalProperties": false,
+      "description": "The required challenge output artifact (`docs/contracts/placement_recommendation.schema.json`).",
+      "properties": {
+        "schema_version": {
+          "default": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "city": {
+          "default": "Atlanta",
+          "title": "City",
+          "type": "string"
+        },
+        "track": {
+          "default": "budget",
+          "enum": [
+            "today",
+            "budget",
+            "decade"
+          ],
+          "title": "Track",
+          "type": "string"
+        },
+        "intervention": {
+          "default": "3 permanent walkable cooling centers (This budget cycle)",
+          "title": "Intervention",
+          "type": "string"
+        },
+        "model_version": {
+          "default": "offset_model_v1",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "campaign_mean_f": {
+          "default": 82.1,
+          "title": "Campaign Mean F",
+          "type": "number"
+        },
+        "sites": {
+          "items": {
+            "$ref": "#/$defs/SiteAssessment"
+          },
+          "title": "Sites",
+          "type": "array"
+        },
+        "runner_up_sites": {
+          "items": {
+            "$ref": "#/$defs/SiteAssessment"
+          },
+          "title": "Runner Up Sites",
+          "type": "array"
+        },
+        "heat_frequency": {
+          "$ref": "#/$defs/CityHeatFrequencySummary"
+        },
+        "equity_audit": {
+          "$ref": "#/$defs/EquityAudit"
+        },
+        "proposal_markdown": {
+          "title": "Proposal Markdown",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "sites",
+        "heat_frequency",
+        "equity_audit",
+        "proposal_markdown",
+        "limitations"
+      ],
+      "title": "PlacementRecommendation",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "default": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "provenance_id": {
+          "description": "Citation tag e.g. 'P1', 'P2'.",
+          "title": "Provenance Id",
+          "type": "string"
+        },
+        "source_type": {
+          "default": "mcp_toolbox",
+          "enum": [
+            "mcp_toolbox",
+            "bq_direct"
+          ],
+          "title": "Source Type",
+          "type": "string"
+        },
+        "tool_name": {
+          "description": "Python domain wrapper or orchestrator step.",
+          "title": "Tool Name",
+          "type": "string"
+        },
+        "mcp_tool_name": {
+          "description": "Tool invoked on heat-toolbox.",
+          "title": "Mcp Tool Name",
+          "type": "string"
+        },
+        "sql_object": {
+          "description": "Underlying BigQuery view/table/model in a4i_semantic or a4i_ml.",
+          "title": "Sql Object",
+          "type": "string"
+        },
+        "parameters": {
+          "additionalProperties": true,
+          "title": "Parameters",
+          "type": "object"
+        },
+        "row_count": {
+          "minimum": 0,
+          "title": "Row Count",
+          "type": "integer"
+        },
+        "model_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "offset_model_v1",
+          "title": "Model Version"
+        },
+        "queried_at_utc": {
+          "title": "Queried At Utc",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provenance_id",
+        "tool_name",
+        "mcp_tool_name",
+        "sql_object",
+        "row_count",
+        "queried_at_utc"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "SiteAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "rank": {
+          "title": "Rank",
+          "type": "integer"
+        },
+        "point_id": {
+          "title": "Point Id",
+          "type": "string"
+        },
+        "lat": {
+          "title": "Lat",
+          "type": "number"
+        },
+        "lon": {
+          "title": "Lon",
+          "type": "number"
+        },
+        "geo_id": {
+          "title": "Geo Id",
+          "type": "string"
+        },
+        "neighborhood": {
+          "title": "Neighborhood",
+          "type": "string"
+        },
+        "predicted_offset_f": {
+          "title": "Predicted Offset F",
+          "type": "number"
+        },
+        "campaign_mean_f": {
+          "default": 82.1,
+          "title": "Campaign Mean F",
+          "type": "number"
+        },
+        "forecast_high_f": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Forecast High F"
+        },
+        "forecast_implied_f": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Forecast Implied F"
+        },
+        "priority_score": {
+          "title": "Priority Score",
+          "type": "number"
+        },
+        "unmeasured": {
+          "title": "Unmeasured",
+          "type": "boolean"
+        },
+        "spacing_conflict_with_rank": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Spacing Conflict With Rank"
+        },
+        "drivers": {
+          "items": {
+            "$ref": "#/$defs/Driver"
+          },
+          "title": "Drivers",
+          "type": "array"
+        },
+        "demographics": {
+          "$ref": "#/$defs/CatchmentDemographics"
+        },
+        "hot_days": {
+          "$ref": "#/$defs/SiteHotDays"
+        },
+        "google_maps_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Google Maps Url"
+        },
+        "google_maps_walking_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Google Maps Walking Url"
+        },
+        "why_here": {
+          "title": "Why Here",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rank",
+        "point_id",
+        "lat",
+        "lon",
+        "geo_id",
+        "neighborhood",
+        "predicted_offset_f",
+        "priority_score",
+        "unmeasured",
+        "drivers",
+        "demographics",
+        "hot_days",
+        "why_here"
+      ],
+      "title": "SiteAssessment",
+      "type": "object"
+    },
+    "SiteHotDays": {
+      "additionalProperties": false,
+      "properties": {
+        "city_days_ge_90f_per_yr": {
+          "default": 78.0,
+          "title": "City Days Ge 90F Per Yr",
+          "type": "number"
+        },
+        "city_days_ge_95f_per_yr": {
+          "default": 23.9,
+          "title": "City Days Ge 95F Per Yr",
+          "type": "number"
+        },
+        "city_days_ge_100f_per_yr": {
+          "default": 1.6,
+          "title": "City Days Ge 100F Per Yr",
+          "type": "number"
+        },
+        "expected_days_ge_90f_equiv": {
+          "default": 88.0,
+          "title": "Expected Days Ge 90F Equiv",
+          "type": "number"
+        },
+        "expected_days_ge_95f_equiv": {
+          "default": 35.0,
+          "title": "Expected Days Ge 95F Equiv",
+          "type": "number"
+        },
+        "expected_days_ge_100f_equiv": {
+          "default": 4.0,
+          "title": "Expected Days Ge 100F Equiv",
+          "type": "number"
+        },
+        "extra_days_ge_95f_equiv": {
+          "default": 11.1,
+          "title": "Extra Days Ge 95F Equiv",
+          "type": "number"
+        }
+      },
+      "title": "SiteHotDays",
+      "type": "object"
+    },
+    "VerificationReport": {
+      "additionalProperties": false,
+      "properties": {
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "ungrounded_numbers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Ungrounded Numbers",
+          "type": "array"
+        },
+        "framing_violations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Framing Violations",
+          "type": "array"
+        },
+        "missing_citations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Citations",
+          "type": "array"
+        },
+        "fallback_used": {
+          "default": false,
+          "title": "Fallback Used",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "passed"
+      ],
+      "title": "VerificationReport",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "success",
+        "out_of_scope",
+        "not_found",
+        "no_data",
+        "needs_clarification",
+        "refused",
+        "error"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "intent": {
+      "$ref": "#/$defs/Intent"
+    },
+    "data_result": {
+      "$ref": "#/$defs/DataResult"
+    },
+    "narrative_markdown": {
+      "title": "Narrative Markdown",
+      "type": "string"
+    },
+    "verification": {
+      "$ref": "#/$defs/VerificationReport"
+    },
+    "latency_ms": {
+      "minimum": 0,
+      "title": "Latency Ms",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "status",
+    "intent",
+    "data_result",
+    "narrative_markdown",
+    "verification",
+    "latency_ms"
+  ],
+  "title": "AgentApiResponse",
+  "type": "object"
+}

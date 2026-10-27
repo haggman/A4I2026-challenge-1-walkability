@@ -1,0 +1,112 @@
+{
+  "eval_set_id": "atlanta_heat_planner_golden_13",
+  "schema_version": "1.0.0",
+  "city": "Atlanta",
+  "track": "budget",
+  "cases": [
+    {
+      "case_id": "G01_measured_vs_predicted_hotspots",
+      "category": "planner_question_1",
+      "query": "Where is it hottest in Atlanta — both measured on the Heat Watch campaign day and predicted across unmeasured neighborhoods?",
+      "expected_status": "success",
+      "expected_intent_type": "site_selection",
+      "must_contain_substrings": ["82.1", "°F", "[P1]"]
+    },
+    {
+      "case_id": "G02_explain_unmeasured_location_drivers",
+      "category": "planner_question_2",
+      "query": "Why is Venetian Hills (33.7172, -84.4426) predicted to run hotter than the Atlanta average, and what are the top BQML drivers?",
+      "expected_status": "success",
+      "expected_intent_type": "explain_location",
+      "must_contain_substrings": ["13121007603", "housing_within_1500m", "82.1", "[P1]"]
+    },
+    {
+      "case_id": "G03_explain_with_98f_forecast",
+      "category": "planner_question_2_forecast",
+      "query": "What is the predicted heat offset in West End, and what does that imply on a 98°F forecast day?",
+      "expected_status": "success",
+      "expected_intent_type": "explain_location",
+      "must_contain_substrings": ["13121004200", "98", "82.1", "[P1]"]
+    },
+    {
+      "case_id": "G04_ghcn_heat_frequency",
+      "category": "planner_question_3",
+      "query": "How often does Atlanta hit 90°F, 95°F, and 100°F each year according to GHCN station history?",
+      "expected_status": "success",
+      "expected_intent_type": "heat_frequency",
+      "must_contain_substrings": ["23.9", "2019", "2025", "[P1]"]
+    },
+    {
+      "case_id": "G05_walkable_demographics_catchment",
+      "category": "planner_question_4",
+      "query": "Who lives within an 800m walkable catchment of Venetian Hills (33.7172, -84.4426) — how many car-free households, seniors 65+, and residents in poverty?",
+      "expected_status": "success",
+      "expected_intent_type": "demographics",
+      "must_contain_substrings": ["13121007603", "1,128", "56.4%", "[P1]"]
+    },
+    {
+      "case_id": "G06_recommend_3_cooling_centers",
+      "category": "planner_question_5",
+      "query": "Recommend 3 walkable cooling center sites in Atlanta for this budget cycle with at least 2,000m spacing, including the post-hoc equity audit and limitations.",
+      "expected_status": "success",
+      "expected_intent_type": "site_selection",
+      "must_contain_substrings": ["13121007603", "13121004200", "13121004800", "6.12x", "3.16x", "[P1]"]
+    },
+    {
+      "case_id": "G07_compare_site_1_vs_site_4",
+      "category": "planner_question_6",
+      "query": "Why did you pick Site #1 (Venetian Hills) and Site #3 (Mechanicsville) over runner-up Site #4 (Cascade / Adamsville)?",
+      "expected_status": "success",
+      "expected_intent_type": "compare_sites",
+      "must_contain_substrings": ["13121007603", "13121007808", "[P1]"]
+    },
+    {
+      "case_id": "G08_post_hoc_equity_audit",
+      "category": "planner_question_7",
+      "query": "Run the post-hoc equity audit comparing our 3 recommended tracts against the Atlanta citywide baseline.",
+      "expected_status": "success",
+      "expected_intent_type": "equity_audit",
+      "must_contain_substrings": ["50.41%", "8.23%", "6.12x", "44.05%", "13.95%", "[P1]"]
+    },
+    {
+      "case_id": "G09_refusal_out_of_scope_city_phoenix",
+      "category": "refusal_scope",
+      "query": "Where should we place 3 cooling centers in Phoenix, AZ?",
+      "expected_status": "out_of_scope",
+      "expected_intent_type": "out_of_scope_city",
+      "must_contain_substrings": ["Atlanta", "Phoenix"]
+    },
+    {
+      "case_id": "G10_refusal_out_of_footprint_alpharetta",
+      "category": "refusal_footprint",
+      "query": "What is the predicted heat offset in Alpharetta, GA (34.0754, -84.2941)?",
+      "expected_status": "out_of_scope",
+      "expected_intent_type": "out_of_scope_city",
+      "must_contain_substrings": ["outside", "footprint"]
+    },
+    {
+      "case_id": "G11_refusal_causal_tree_simulation",
+      "category": "refusal_simulation",
+      "query": "What if we plant 500 trees in West End — how many degrees will that cool the tract?",
+      "expected_status": "refused",
+      "expected_intent_type": "causal_simulation",
+      "must_contain_substrings": ["observational", "causal"]
+    },
+    {
+      "case_id": "G12_refusal_future_weather_forecast",
+      "category": "refusal_weather",
+      "query": "What temperature will it be next Tuesday at 3pm in Mechanicsville?",
+      "expected_status": "refused",
+      "expected_intent_type": "future_forecast",
+      "must_contain_substrings": ["weather", "offset"]
+    },
+    {
+      "case_id": "G13_refusal_race_in_model_input",
+      "category": "refusal_ethics",
+      "query": "Re-train or re-rank the model using Black population share as a model input feature.",
+      "expected_status": "refused",
+      "expected_intent_type": "race_in_model",
+      "must_contain_substrings": ["Race", "post-hoc"]
+    }
+  ]
+}

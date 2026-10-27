@@ -1,0 +1,836 @@
+{
+  "schema_version": "1.0.0",
+  "status": "ok",
+  "intent": {
+    "schema_version": "1.0.0",
+    "intent_type": "compare_sites",
+    "city": "Atlanta",
+    "location_query": null,
+    "lat": null,
+    "lon": null,
+    "k_sites": 3,
+    "min_spacing_m": 2000.0,
+    "radius_m": 800.0,
+    "forecast_high_f": null,
+    "unmeasured_only": false,
+    "compared_ranks": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "missing_fields": [],
+    "clarification_question": null,
+    "refusal_reason": null,
+    "status": "ok",
+    "k": 3,
+    "threshold_f": 95.0,
+    "candidate_ranks": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "missing_parameters": [],
+    "clarifying_question": null,
+    "refusal_explanation": null
+  },
+  "data_result": {
+    "schema_version": "1.0.0",
+    "status": "ok",
+    "intent_type": "compare_sites",
+    "sites": [
+      {
+        "rank": 1,
+        "point_id": "g_33.7172_-84.4426",
+        "lat": 33.71715,
+        "lon": -84.4426,
+        "geo_id": "13121007603",
+        "neighborhood": "Venetian Hills / Oakland City",
+        "predicted_offset_f": 1.28,
+        "campaign_mean_f": 82.1,
+        "forecast_high_f": null,
+        "forecast_implied_f": null,
+        "priority_score": 1.791,
+        "unmeasured": true,
+        "spacing_conflict_with_rank": null,
+        "drivers": [
+          {
+            "feature": "housing_within_1500m",
+            "attribution": 1.12
+          },
+          {
+            "feature": "water_share",
+            "attribution": 0.111
+          },
+          {
+            "feature": "pop_density_km2",
+            "attribution": 0.079
+          },
+          {
+            "feature": "mean_year_built_1500m",
+            "attribution": 0.074
+          },
+          {
+            "feature": "median_year_built",
+            "attribution": -0.068
+          }
+        ],
+        "demographics": {
+          "geo_id": "13121007603",
+          "radius_m": 800.0,
+          "tract_count": 1,
+          "tract_geo_ids": [
+            "13121007603"
+          ],
+          "total_pop": 3943,
+          "pop_65_plus": 742,
+          "share_65_plus": 0.1882,
+          "households": 0,
+          "car_free_households": 1128,
+          "no_vehicle_rate": 0.5637,
+          "poverty_rate": 0.4856,
+          "median_income": 14630.0
+        },
+        "hot_days": {
+          "city_days_ge_90f_per_yr": 78.0,
+          "city_days_ge_95f_per_yr": 23.9,
+          "city_days_ge_100f_per_yr": 1.6,
+          "expected_days_ge_90f_equiv": 88.9,
+          "expected_days_ge_95f_equiv": 33.0,
+          "expected_days_ge_100f_equiv": 3.6,
+          "extra_days_ge_95f_equiv": 9.1
+        },
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=33.71715,-84.44260",
+        "google_maps_walking_url": "https://www.google.com/maps/dir/?api=1&destination=33.71715,-84.44260&travelmode=walking",
+        "why_here": "Predicted +1.28°F above the Atlanta campaign average (82.1°F) (~33.0 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.120°F) at an unmeasured grid cell in Venetian Hills / Oakland City (Tract 13121007603). Tract 13121007603 has 56.4% car-free households (1,128 HH), 48.6% poverty, and 18.8% seniors 65+ (742 seniors)."
+      },
+      {
+        "rank": 2,
+        "point_id": "g_33.7397_-84.4128",
+        "lat": 33.73965,
+        "lon": -84.41283,
+        "geo_id": "13121004200",
+        "neighborhood": "West End / Ashview Heights",
+        "predicted_offset_f": 1.49,
+        "campaign_mean_f": 82.1,
+        "forecast_high_f": null,
+        "forecast_implied_f": null,
+        "priority_score": 1.646,
+        "unmeasured": false,
+        "spacing_conflict_with_rank": null,
+        "drivers": [
+          {
+            "feature": "housing_within_1500m",
+            "attribution": 1.449
+          },
+          {
+            "feature": "water_share",
+            "attribution": 0.111
+          },
+          {
+            "feature": "median_year_built",
+            "attribution": 0.105
+          },
+          {
+            "feature": "pop_within_1500m",
+            "attribution": -0.102
+          },
+          {
+            "feature": "pop_density_km2",
+            "attribution": -0.089
+          }
+        ],
+        "demographics": {
+          "geo_id": "13121004200",
+          "radius_m": 800.0,
+          "tract_count": 2,
+          "tract_geo_ids": [
+            "13121004200",
+            "13121004300"
+          ],
+          "total_pop": 5378,
+          "pop_65_plus": 593,
+          "share_65_plus": 0.1103,
+          "households": 2085,
+          "car_free_households": 854,
+          "no_vehicle_rate": 0.4096,
+          "poverty_rate": 0.2971,
+          "median_income": 23906.0
+        },
+        "hot_days": {
+          "city_days_ge_90f_per_yr": 78.0,
+          "city_days_ge_95f_per_yr": 23.9,
+          "city_days_ge_100f_per_yr": 1.6,
+          "expected_days_ge_90f_equiv": 88.9,
+          "expected_days_ge_95f_equiv": 33.0,
+          "expected_days_ge_100f_equiv": 3.6,
+          "extra_days_ge_95f_equiv": 9.1
+        },
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=33.73965,-84.41283",
+        "google_maps_walking_url": "https://www.google.com/maps/dir/?api=1&destination=33.73965,-84.41283&travelmode=walking",
+        "why_here": "Predicted +1.49°F above the Atlanta campaign average (82.1°F) (~33.0 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.449°F) at an measured grid cell in West End / Ashview Heights (Tract 13121004200). Tract 13121004200 has 46.7% car-free households (686 HH), 36.3% poverty, and 18.4% seniors 65+ (493 seniors)."
+      },
+      {
+        "rank": 3,
+        "point_id": "g_33.7397_-84.3858",
+        "lat": 33.73965,
+        "lon": -84.38576,
+        "geo_id": "13121004800",
+        "neighborhood": "Mechanicsville / Summerhill",
+        "predicted_offset_f": 1.35,
+        "campaign_mean_f": 82.1,
+        "forecast_high_f": null,
+        "forecast_implied_f": null,
+        "priority_score": 1.566,
+        "unmeasured": true,
+        "spacing_conflict_with_rank": null,
+        "drivers": [
+          {
+            "feature": "housing_within_1500m",
+            "attribution": 1.266
+          },
+          {
+            "feature": "pop_density_km2",
+            "attribution": -0.206
+          },
+          {
+            "feature": "median_year_built",
+            "attribution": 0.15
+          },
+          {
+            "feature": "housing_density_km2",
+            "attribution": 0.139
+          },
+          {
+            "feature": "water_share",
+            "attribution": 0.111
+          }
+        ],
+        "demographics": {
+          "geo_id": "13121004800",
+          "radius_m": 800.0,
+          "tract_count": 3,
+          "tract_geo_ids": [
+            "13121004800",
+            "13121004900",
+            "13121012000"
+          ],
+          "total_pop": 7454,
+          "pop_65_plus": 637,
+          "share_65_plus": 0.0855,
+          "households": 3515,
+          "car_free_households": 936,
+          "no_vehicle_rate": 0.2663,
+          "poverty_rate": 0.3872,
+          "median_income": 14654.0
+        },
+        "hot_days": {
+          "city_days_ge_90f_per_yr": 78.0,
+          "city_days_ge_95f_per_yr": 23.9,
+          "city_days_ge_100f_per_yr": 1.6,
+          "expected_days_ge_90f_equiv": 88.9,
+          "expected_days_ge_95f_equiv": 33.0,
+          "expected_days_ge_100f_equiv": 3.6,
+          "extra_days_ge_95f_equiv": 9.1
+        },
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=33.73965,-84.38576",
+        "google_maps_walking_url": "https://www.google.com/maps/dir/?api=1&destination=33.73965,-84.38576&travelmode=walking",
+        "why_here": "Predicted +1.35°F above the Atlanta campaign average (82.1°F) (~33.0 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.266°F) at an unmeasured grid cell in Mechanicsville / Summerhill (Tract 13121004800). Tract 13121004800 has 38.0% car-free households (276 HH), 46.8% poverty, and 24.2% seniors 65+ (263 seniors)."
+      }
+    ],
+    "runner_up_sites": [
+      {
+        "rank": 4,
+        "point_id": "g_33.7419_-84.4994",
+        "lat": 33.7419,
+        "lon": -84.49945,
+        "geo_id": "13121007808",
+        "neighborhood": "Cascade / Adamsville",
+        "predicted_offset_f": 0.97,
+        "campaign_mean_f": 82.1,
+        "forecast_high_f": null,
+        "forecast_implied_f": null,
+        "priority_score": 1.252,
+        "unmeasured": true,
+        "spacing_conflict_with_rank": null,
+        "drivers": [
+          {
+            "feature": "housing_within_1500m",
+            "attribution": 1.03
+          },
+          {
+            "feature": "pop_density_km2",
+            "attribution": -0.116
+          },
+          {
+            "feature": "water_share",
+            "attribution": 0.111
+          },
+          {
+            "feature": "median_year_built",
+            "attribution": -0.081
+          },
+          {
+            "feature": "pop_within_1500m",
+            "attribution": -0.065
+          }
+        ],
+        "demographics": {
+          "geo_id": "13121007808",
+          "radius_m": 800.0,
+          "tract_count": 1,
+          "tract_geo_ids": [
+            "13121007808"
+          ],
+          "total_pop": 3728,
+          "pop_65_plus": 229,
+          "share_65_plus": 0.0614,
+          "households": 0,
+          "car_free_households": 606,
+          "no_vehicle_rate": 0.4947,
+          "poverty_rate": 0.7092,
+          "median_income": 13577.0
+        },
+        "hot_days": {
+          "city_days_ge_90f_per_yr": 78.0,
+          "city_days_ge_95f_per_yr": 23.9,
+          "city_days_ge_100f_per_yr": 1.6,
+          "expected_days_ge_90f_equiv": 88.9,
+          "expected_days_ge_95f_equiv": 23.9,
+          "expected_days_ge_100f_equiv": 1.6,
+          "extra_days_ge_95f_equiv": 11.1
+        },
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=33.74190,-84.49945",
+        "google_maps_walking_url": "https://www.google.com/maps/dir/?api=1&destination=33.74190,-84.49945&travelmode=walking",
+        "why_here": "Predicted +0.97°F above the Atlanta campaign average (82.1°F) (~23.9 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.030°F) at an unmeasured grid cell in Cascade / Adamsville (Tract 13121007808). Tract 13121007808 has 49.5% car-free households (606 HH), 70.9% poverty, and 6.1% seniors 65+ (229 seniors)."
+      }
+    ],
+    "comparison_table": [
+      {
+        "incumbent_rank": 1,
+        "incumbent_geo_id": "13121007603",
+        "incumbent_neighborhood": "Venetian Hills / Oakland City",
+        "challenger_rank": 4,
+        "challenger_geo_id": "13121007808",
+        "challenger_neighborhood": "Cascade / Adamsville",
+        "challenger_spacing_conflict_with_rank": null,
+        "delta_priority_score_inc_minus_chal": 0.539,
+        "delta_predicted_offset_f_inc_minus_chal": 0.31,
+        "delta_no_vehicle_rate_inc_minus_chal": 0.069,
+        "delta_car_free_hh_inc_minus_chal": 522,
+        "delta_poverty_rate_inc_minus_chal": -0.2236,
+        "delta_share_65_plus_inc_minus_chal": 0.1268,
+        "delta_pop_65_plus_inc_minus_chal": 513
+      },
+      {
+        "incumbent_rank": 2,
+        "incumbent_geo_id": "13121004200",
+        "incumbent_neighborhood": "West End / Ashview Heights",
+        "challenger_rank": 4,
+        "challenger_geo_id": "13121007808",
+        "challenger_neighborhood": "Cascade / Adamsville",
+        "challenger_spacing_conflict_with_rank": null,
+        "delta_priority_score_inc_minus_chal": 0.394,
+        "delta_predicted_offset_f_inc_minus_chal": 0.52,
+        "delta_no_vehicle_rate_inc_minus_chal": -0.0851,
+        "delta_car_free_hh_inc_minus_chal": 248,
+        "delta_poverty_rate_inc_minus_chal": -0.4121,
+        "delta_share_65_plus_inc_minus_chal": 0.0489,
+        "delta_pop_65_plus_inc_minus_chal": 364
+      },
+      {
+        "incumbent_rank": 3,
+        "incumbent_geo_id": "13121004800",
+        "incumbent_neighborhood": "Mechanicsville / Summerhill",
+        "challenger_rank": 4,
+        "challenger_geo_id": "13121007808",
+        "challenger_neighborhood": "Cascade / Adamsville",
+        "challenger_spacing_conflict_with_rank": null,
+        "delta_priority_score_inc_minus_chal": 0.314,
+        "delta_predicted_offset_f_inc_minus_chal": 0.38,
+        "delta_no_vehicle_rate_inc_minus_chal": -0.2284,
+        "delta_car_free_hh_inc_minus_chal": 330,
+        "delta_poverty_rate_inc_minus_chal": -0.322,
+        "delta_share_65_plus_inc_minus_chal": 0.0241,
+        "delta_pop_65_plus_inc_minus_chal": 408
+      }
+    ],
+    "heat_frequency": null,
+    "equity_audit": null,
+    "recommendation": null,
+    "provenance": [],
+    "error_message": null,
+    "rows": [],
+    "summary_metrics": {
+      "sites_returned": 3
+    }
+  },
+  "narrative_markdown": "### Ranked Cooling-Center Sites — Atlanta, GA (`2,000 m` Minimum Spacing) [P1]\n\n- **Site #1 — Venetian Hills / Oakland City (`g_33.7172_-84.4426`, Tract `13121007603`):** Predicted **`+1.28 °F`** hotter than the Atlanta campaign mean (`82.1 °F`), priority score **`1.791`**, top driver `housing_within_1500m` (+1.120 °F), `56.4%` car-free households (`1,128` HH), `48.6%` poverty, `18.8%` seniors 65+ ([Map Pin](https://www.google.com/maps/search/?api=1&query=33.71715,-84.44260)) [P1]\n- **Site #2 — West End / Ashview Heights (`g_33.7397_-84.4128`, Tract `13121004200`):** Predicted **`+1.49 °F`** hotter than the Atlanta campaign mean (`82.1 °F`), priority score **`1.646`**, top driver `housing_within_1500m` (+1.449 °F), `41.0%` car-free households (`854` HH), `29.7%` poverty, `11.0%` seniors 65+ ([Map Pin](https://www.google.com/maps/search/?api=1&query=33.73965,-84.41283)) [P1]\n- **Site #3 — Mechanicsville / Summerhill (`g_33.7397_-84.3858`, Tract `13121004800`):** Predicted **`+1.35 °F`** hotter than the Atlanta campaign mean (`82.1 °F`), priority score **`1.566`**, top driver `housing_within_1500m` (+1.266 °F), `26.6%` car-free households (`936` HH), `38.7%` poverty, `8.6%` seniors 65+ ([Map Pin](https://www.google.com/maps/search/?api=1&query=33.73965,-84.38576)) [P1]\n\n### Candidate Site Comparison & Displacement Trade-Offs [P1]\n\n- **Site #1 (Venetian Hills / Oakland City, Tract `13121007603`) vs. Challenger Site #4 (Cascade / Adamsville, Tract `13121007808`):** Priority score delta `+0.539`, predicted offset delta `+0.31 °F`, no-vehicle rate delta `+6.9 pp` (`+522` car-free HH), poverty rate delta `-22.4 pp`, seniors 65+ share delta `+12.7 pp` [P1]\n- **Site #2 (West End / Ashview Heights, Tract `13121004200`) vs. Challenger Site #4 (Cascade / Adamsville, Tract `13121007808`):** Priority score delta `+0.394`, predicted offset delta `+0.52 °F`, no-vehicle rate delta `-8.5 pp` (`+248` car-free HH), poverty rate delta `-41.2 pp`, seniors 65+ share delta `+4.9 pp` [P1]\n- **Site #3 (Mechanicsville / Summerhill, Tract `13121004800`) vs. Challenger Site #4 (Cascade / Adamsville, Tract `13121007808`):** Priority score delta `+0.314`, predicted offset delta `+0.38 °F`, no-vehicle rate delta `-22.8 pp` (`+330` car-free HH), poverty rate delta `-32.2 pp`, seniors 65+ share delta `+2.4 pp` [P1]",
+  "verification": {
+    "passed": true,
+    "ungrounded_numbers": [],
+    "framing_violations": [],
+    "missing_citations": [],
+    "fallback_used": false
+  },
+  "latency_ms": 1,
+  "trace_id": "tr_sample_compare_site_4_atlanta",
+  "narrative": "### Ranked Cooling-Center Sites — Atlanta, GA (`2,000 m` Minimum Spacing) [P1]\n\n- **Site #1 — Venetian Hills / Oakland City (`g_33.7172_-84.4426`, Tract `13121007603`):** Predicted **`+1.28 °F`** hotter than the Atlanta campaign mean (`82.1 °F`), priority score **`1.791`**, top driver `housing_within_1500m` (+1.120 °F), `56.4%` car-free households (`1,128` HH), `48.6%` poverty, `18.8%` seniors 65+ ([Map Pin](https://www.google.com/maps/search/?api=1&query=33.71715,-84.44260)) [P1]\n- **Site #2 — West End / Ashview Heights (`g_33.7397_-84.4128`, Tract `13121004200`):** Predicted **`+1.49 °F`** hotter than the Atlanta campaign mean (`82.1 °F`), priority score **`1.646`**, top driver `housing_within_1500m` (+1.449 °F), `41.0%` car-free households (`854` HH), `29.7%` poverty, `11.0%` seniors 65+ ([Map Pin](https://www.google.com/maps/search/?api=1&query=33.73965,-84.41283)) [P1]\n- **Site #3 — Mechanicsville / Summerhill (`g_33.7397_-84.3858`, Tract `13121004800`):** Predicted **`+1.35 °F`** hotter than the Atlanta campaign mean (`82.1 °F`), priority score **`1.566`**, top driver `housing_within_1500m` (+1.266 °F), `26.6%` car-free households (`936` HH), `38.7%` poverty, `8.6%` seniors 65+ ([Map Pin](https://www.google.com/maps/search/?api=1&query=33.73965,-84.38576)) [P1]\n\n### Candidate Site Comparison & Displacement Trade-Offs [P1]\n\n- **Site #1 (Venetian Hills / Oakland City, Tract `13121007603`) vs. Challenger Site #4 (Cascade / Adamsville, Tract `13121007808`):** Priority score delta `+0.539`, predicted offset delta `+0.31 °F`, no-vehicle rate delta `+6.9 pp` (`+522` car-free HH), poverty rate delta `-22.4 pp`, seniors 65+ share delta `+12.7 pp` [P1]\n- **Site #2 (West End / Ashview Heights, Tract `13121004200`) vs. Challenger Site #4 (Cascade / Adamsville, Tract `13121007808`):** Priority score delta `+0.394`, predicted offset delta `+0.52 °F`, no-vehicle rate delta `-8.5 pp` (`+248` car-free HH), poverty rate delta `-41.2 pp`, seniors 65+ share delta `+4.9 pp` [P1]\n- **Site #3 (Mechanicsville / Summerhill, Tract `13121004800`) vs. Challenger Site #4 (Cascade / Adamsville, Tract `13121007808`):** Priority score delta `+0.314`, predicted offset delta `+0.38 °F`, no-vehicle rate delta `-22.8 pp` (`+330` car-free HH), poverty rate delta `-32.2 pp`, seniors 65+ share delta `+2.4 pp` [P1]",
+  "citations": [],
+  "total_latency_ms": 1,
+  "error_message": null,
+  "recommendation": {
+    "city": "Atlanta",
+    "track": "budget",
+    "scenario": "3 permanent walkable cooling centers (This budget cycle)",
+    "forecast_high_f": null,
+    "campaign_mean_f": 82.062,
+    "sites": [
+      {
+        "rank": 1,
+        "point_id": "g_33.7172_-84.4426",
+        "lat": 33.71715,
+        "lon": -84.4426,
+        "geo_id": "13121007603",
+        "neighborhood": "Venetian Hills / Oakland City",
+        "predicted_offset_f": 1.28,
+        "campaign_mean_f": 82.1,
+        "forecast_high_f": null,
+        "forecast_implied_f": null,
+        "priority_score": 1.791,
+        "unmeasured": true,
+        "spacing_conflict_with_rank": null,
+        "drivers": [
+          {
+            "feature": "housing_within_1500m",
+            "label": "Homes within 1.5 km",
+            "attribution_f": 1.12,
+            "attribution": 1.12
+          },
+          {
+            "feature": "water_share",
+            "label": "Water nearby",
+            "attribution_f": 0.111,
+            "attribution": 0.111
+          },
+          {
+            "feature": "pop_density_km2",
+            "label": "Street density",
+            "attribution_f": 0.079,
+            "attribution": 0.079
+          },
+          {
+            "feature": "mean_year_built_1500m",
+            "label": "Building age within 1.5 km",
+            "attribution_f": 0.074,
+            "attribution": 0.074
+          },
+          {
+            "feature": "median_year_built",
+            "label": "Building age",
+            "attribution_f": -0.068,
+            "attribution": -0.068
+          }
+        ],
+        "demographics": {
+          "geo_id": "13121007603",
+          "radius_m": 800.0,
+          "tract_count": 1,
+          "tract_geo_ids": [
+            "13121007603"
+          ],
+          "total_pop": 3943,
+          "pop_65_plus": 742,
+          "share_65_plus": 0.1882,
+          "households": 0,
+          "car_free_households": 1128,
+          "no_vehicle_rate": 0.5637,
+          "poverty_rate": 0.4856,
+          "median_income": 14630.0
+        },
+        "hot_days": {
+          "offset_f": 1.28,
+          "mean_days_ge_95f_equiv_per_yr": 33.0,
+          "city_baseline_days_ge_95f_per_yr": 23.9,
+          "extra_days_ge_95f_equiv_per_yr": 9.1,
+          "mean_days_ge_90f_equiv_per_yr": 88.9,
+          "mean_days_ge_100f_equiv_per_yr": 3.6,
+          "full_years_counted": 7,
+          "city_days_ge_90f_per_yr": 78.0,
+          "city_days_ge_95f_per_yr": 23.9,
+          "city_days_ge_100f_per_yr": 1.6,
+          "expected_days_ge_90f_equiv": 88.9,
+          "expected_days_ge_95f_equiv": 33.0,
+          "expected_days_ge_100f_equiv": 3.6,
+          "extra_days_ge_95f_equiv": 9.1
+        },
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=33.71715,-84.44260",
+        "google_maps_walking_url": "https://www.google.com/maps/dir/?api=1&destination=33.71715,-84.44260&travelmode=walking",
+        "why_here": "Predicted +1.28°F above the Atlanta campaign average (82.1°F) (~33.0 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.120°F) at an unmeasured grid cell in Venetian Hills / Oakland City (Tract 13121007603). Tract 13121007603 has 56.4% car-free households (1,128 HH), 48.6% poverty, and 18.8% seniors 65+ (742 seniors).",
+        "site_id": "g_33.7172_-84.4426",
+        "address_hint": "Venetian Hills / Oakland City",
+        "implied_local_high_f": null,
+        "why": "Predicted +1.28°F above the Atlanta campaign average (82.1°F) (~33.0 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.120°F) at an unmeasured grid cell in Venetian Hills / Oakland City (Tract 13121007603). Tract 13121007603 has 56.4% car-free households (1,128 HH), 48.6% poverty, and 18.8% seniors 65+ (742 seniors).",
+        "provenance_ids": [],
+        "tract_no_vehicle_rate": 0.5637,
+        "tract_share_65_plus": 0.1882,
+        "tract_poverty_rate": 0.4856,
+        "passed_over_reason": null,
+        "catchment": {
+          "radius_m": 800.0,
+          "tracts_within_radius": 1,
+          "population_within_radius": 3943,
+          "pop_65_plus_within_radius": 742,
+          "car_free_households_within_radius": 1128,
+          "households_within_radius": 0,
+          "share_65_plus_within_radius": 0.1882,
+          "no_vehicle_rate_within_radius": 0.5637,
+          "pop_weighted_poverty_rate": 0.4856,
+          "tract_geo_ids": [
+            "13121007603"
+          ]
+        }
+      },
+      {
+        "rank": 2,
+        "point_id": "g_33.7397_-84.4128",
+        "lat": 33.73965,
+        "lon": -84.41283,
+        "geo_id": "13121004200",
+        "neighborhood": "West End / Ashview Heights",
+        "predicted_offset_f": 1.49,
+        "campaign_mean_f": 82.1,
+        "forecast_high_f": null,
+        "forecast_implied_f": null,
+        "priority_score": 1.646,
+        "unmeasured": false,
+        "spacing_conflict_with_rank": null,
+        "drivers": [
+          {
+            "feature": "housing_within_1500m",
+            "label": "Homes within 1.5 km",
+            "attribution_f": 1.449,
+            "attribution": 1.449
+          },
+          {
+            "feature": "water_share",
+            "label": "Water nearby",
+            "attribution_f": 0.111,
+            "attribution": 0.111
+          },
+          {
+            "feature": "median_year_built",
+            "label": "Building age",
+            "attribution_f": 0.105,
+            "attribution": 0.105
+          },
+          {
+            "feature": "pop_within_1500m",
+            "label": "People within 1.5 km",
+            "attribution_f": -0.102,
+            "attribution": -0.102
+          },
+          {
+            "feature": "pop_density_km2",
+            "label": "Street density",
+            "attribution_f": -0.089,
+            "attribution": -0.089
+          }
+        ],
+        "demographics": {
+          "geo_id": "13121004200",
+          "radius_m": 800.0,
+          "tract_count": 2,
+          "tract_geo_ids": [
+            "13121004200",
+            "13121004300"
+          ],
+          "total_pop": 5378,
+          "pop_65_plus": 593,
+          "share_65_plus": 0.1103,
+          "households": 2085,
+          "car_free_households": 854,
+          "no_vehicle_rate": 0.4096,
+          "poverty_rate": 0.2971,
+          "median_income": 23906.0
+        },
+        "hot_days": {
+          "offset_f": 1.49,
+          "mean_days_ge_95f_equiv_per_yr": 33.0,
+          "city_baseline_days_ge_95f_per_yr": 23.9,
+          "extra_days_ge_95f_equiv_per_yr": 9.1,
+          "mean_days_ge_90f_equiv_per_yr": 88.9,
+          "mean_days_ge_100f_equiv_per_yr": 3.6,
+          "full_years_counted": 7,
+          "city_days_ge_90f_per_yr": 78.0,
+          "city_days_ge_95f_per_yr": 23.9,
+          "city_days_ge_100f_per_yr": 1.6,
+          "expected_days_ge_90f_equiv": 88.9,
+          "expected_days_ge_95f_equiv": 33.0,
+          "expected_days_ge_100f_equiv": 3.6,
+          "extra_days_ge_95f_equiv": 9.1
+        },
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=33.73965,-84.41283",
+        "google_maps_walking_url": "https://www.google.com/maps/dir/?api=1&destination=33.73965,-84.41283&travelmode=walking",
+        "why_here": "Predicted +1.49°F above the Atlanta campaign average (82.1°F) (~33.0 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.449°F) at an measured grid cell in West End / Ashview Heights (Tract 13121004200). Tract 13121004200 has 46.7% car-free households (686 HH), 36.3% poverty, and 18.4% seniors 65+ (493 seniors).",
+        "site_id": "g_33.7397_-84.4128",
+        "address_hint": "West End / Ashview Heights",
+        "implied_local_high_f": null,
+        "why": "Predicted +1.49°F above the Atlanta campaign average (82.1°F) (~33.0 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.449°F) at an measured grid cell in West End / Ashview Heights (Tract 13121004200). Tract 13121004200 has 46.7% car-free households (686 HH), 36.3% poverty, and 18.4% seniors 65+ (493 seniors).",
+        "provenance_ids": [],
+        "tract_no_vehicle_rate": 0.4096,
+        "tract_share_65_plus": 0.1103,
+        "tract_poverty_rate": 0.2971,
+        "passed_over_reason": null,
+        "catchment": {
+          "radius_m": 800.0,
+          "tracts_within_radius": 2,
+          "population_within_radius": 5378,
+          "pop_65_plus_within_radius": 593,
+          "car_free_households_within_radius": 854,
+          "households_within_radius": 2085,
+          "share_65_plus_within_radius": 0.1103,
+          "no_vehicle_rate_within_radius": 0.4096,
+          "pop_weighted_poverty_rate": 0.2971,
+          "tract_geo_ids": [
+            "13121004200",
+            "13121004300"
+          ]
+        }
+      },
+      {
+        "rank": 3,
+        "point_id": "g_33.7397_-84.3858",
+        "lat": 33.73965,
+        "lon": -84.38576,
+        "geo_id": "13121004800",
+        "neighborhood": "Mechanicsville / Summerhill",
+        "predicted_offset_f": 1.35,
+        "campaign_mean_f": 82.1,
+        "forecast_high_f": null,
+        "forecast_implied_f": null,
+        "priority_score": 1.566,
+        "unmeasured": true,
+        "spacing_conflict_with_rank": null,
+        "drivers": [
+          {
+            "feature": "housing_within_1500m",
+            "label": "Homes within 1.5 km",
+            "attribution_f": 1.266,
+            "attribution": 1.266
+          },
+          {
+            "feature": "pop_density_km2",
+            "label": "Street density",
+            "attribution_f": -0.206,
+            "attribution": -0.206
+          },
+          {
+            "feature": "median_year_built",
+            "label": "Building age",
+            "attribution_f": 0.15,
+            "attribution": 0.15
+          },
+          {
+            "feature": "housing_density_km2",
+            "label": "Housing density",
+            "attribution_f": 0.139,
+            "attribution": 0.139
+          },
+          {
+            "feature": "water_share",
+            "label": "Water nearby",
+            "attribution_f": 0.111,
+            "attribution": 0.111
+          }
+        ],
+        "demographics": {
+          "geo_id": "13121004800",
+          "radius_m": 800.0,
+          "tract_count": 3,
+          "tract_geo_ids": [
+            "13121004800",
+            "13121004900",
+            "13121012000"
+          ],
+          "total_pop": 7454,
+          "pop_65_plus": 637,
+          "share_65_plus": 0.0855,
+          "households": 3515,
+          "car_free_households": 936,
+          "no_vehicle_rate": 0.2663,
+          "poverty_rate": 0.3872,
+          "median_income": 14654.0
+        },
+        "hot_days": {
+          "offset_f": 1.35,
+          "mean_days_ge_95f_equiv_per_yr": 33.0,
+          "city_baseline_days_ge_95f_per_yr": 23.9,
+          "extra_days_ge_95f_equiv_per_yr": 9.1,
+          "mean_days_ge_90f_equiv_per_yr": 88.9,
+          "mean_days_ge_100f_equiv_per_yr": 3.6,
+          "full_years_counted": 7,
+          "city_days_ge_90f_per_yr": 78.0,
+          "city_days_ge_95f_per_yr": 23.9,
+          "city_days_ge_100f_per_yr": 1.6,
+          "expected_days_ge_90f_equiv": 88.9,
+          "expected_days_ge_95f_equiv": 33.0,
+          "expected_days_ge_100f_equiv": 3.6,
+          "extra_days_ge_95f_equiv": 9.1
+        },
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=33.73965,-84.38576",
+        "google_maps_walking_url": "https://www.google.com/maps/dir/?api=1&destination=33.73965,-84.38576&travelmode=walking",
+        "why_here": "Predicted +1.35°F above the Atlanta campaign average (82.1°F) (~33.0 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.266°F) at an unmeasured grid cell in Mechanicsville / Summerhill (Tract 13121004800). Tract 13121004800 has 38.0% car-free households (276 HH), 46.8% poverty, and 24.2% seniors 65+ (263 seniors).",
+        "site_id": "g_33.7397_-84.3858",
+        "address_hint": "Mechanicsville / Summerhill",
+        "implied_local_high_f": null,
+        "why": "Predicted +1.35°F above the Atlanta campaign average (82.1°F) (~33.0 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.266°F) at an unmeasured grid cell in Mechanicsville / Summerhill (Tract 13121004800). Tract 13121004800 has 38.0% car-free households (276 HH), 46.8% poverty, and 24.2% seniors 65+ (263 seniors).",
+        "provenance_ids": [],
+        "tract_no_vehicle_rate": 0.2663,
+        "tract_share_65_plus": 0.0855,
+        "tract_poverty_rate": 0.3872,
+        "passed_over_reason": null,
+        "catchment": {
+          "radius_m": 800.0,
+          "tracts_within_radius": 3,
+          "population_within_radius": 7454,
+          "pop_65_plus_within_radius": 637,
+          "car_free_households_within_radius": 936,
+          "households_within_radius": 3515,
+          "share_65_plus_within_radius": 0.0855,
+          "no_vehicle_rate_within_radius": 0.2663,
+          "pop_weighted_poverty_rate": 0.3872,
+          "tract_geo_ids": [
+            "13121004800",
+            "13121004900",
+            "13121012000"
+          ]
+        }
+      }
+    ],
+    "runner_up_sites": [
+      {
+        "rank": 4,
+        "point_id": "g_33.7419_-84.4994",
+        "lat": 33.7419,
+        "lon": -84.49945,
+        "geo_id": "13121007808",
+        "neighborhood": "Cascade / Adamsville",
+        "predicted_offset_f": 0.97,
+        "campaign_mean_f": 82.1,
+        "forecast_high_f": null,
+        "forecast_implied_f": null,
+        "priority_score": 1.252,
+        "unmeasured": true,
+        "spacing_conflict_with_rank": null,
+        "drivers": [
+          {
+            "feature": "housing_within_1500m",
+            "label": "Homes within 1.5 km",
+            "attribution_f": 1.03,
+            "attribution": 1.03
+          },
+          {
+            "feature": "pop_density_km2",
+            "label": "Street density",
+            "attribution_f": -0.116,
+            "attribution": -0.116
+          },
+          {
+            "feature": "water_share",
+            "label": "Water nearby",
+            "attribution_f": 0.111,
+            "attribution": 0.111
+          },
+          {
+            "feature": "median_year_built",
+            "label": "Building age",
+            "attribution_f": -0.081,
+            "attribution": -0.081
+          },
+          {
+            "feature": "pop_within_1500m",
+            "label": "People within 1.5 km",
+            "attribution_f": -0.065,
+            "attribution": -0.065
+          }
+        ],
+        "demographics": {
+          "geo_id": "13121007808",
+          "radius_m": 800.0,
+          "tract_count": 1,
+          "tract_geo_ids": [
+            "13121007808"
+          ],
+          "total_pop": 3728,
+          "pop_65_plus": 229,
+          "share_65_plus": 0.0614,
+          "households": 0,
+          "car_free_households": 606,
+          "no_vehicle_rate": 0.4947,
+          "poverty_rate": 0.7092,
+          "median_income": 13577.0
+        },
+        "hot_days": {
+          "offset_f": 0.97,
+          "mean_days_ge_95f_equiv_per_yr": 23.9,
+          "city_baseline_days_ge_95f_per_yr": 23.9,
+          "extra_days_ge_95f_equiv_per_yr": 11.1,
+          "mean_days_ge_90f_equiv_per_yr": 88.9,
+          "mean_days_ge_100f_equiv_per_yr": 1.6,
+          "full_years_counted": 7,
+          "city_days_ge_90f_per_yr": 78.0,
+          "city_days_ge_95f_per_yr": 23.9,
+          "city_days_ge_100f_per_yr": 1.6,
+          "expected_days_ge_90f_equiv": 88.9,
+          "expected_days_ge_95f_equiv": 23.9,
+          "expected_days_ge_100f_equiv": 1.6,
+          "extra_days_ge_95f_equiv": 11.1
+        },
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=33.74190,-84.49945",
+        "google_maps_walking_url": "https://www.google.com/maps/dir/?api=1&destination=33.74190,-84.49945&travelmode=walking",
+        "why_here": "Predicted +0.97°F above the Atlanta campaign average (82.1°F) (~23.9 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.030°F) at an unmeasured grid cell in Cascade / Adamsville (Tract 13121007808). Tract 13121007808 has 49.5% car-free households (606 HH), 70.9% poverty, and 6.1% seniors 65+ (229 seniors).",
+        "site_id": "g_33.7419_-84.4994",
+        "address_hint": "Cascade / Adamsville",
+        "implied_local_high_f": null,
+        "why": "Predicted +0.97°F above the Atlanta campaign average (82.1°F) (~23.9 days/yr of >=95°F-equivalent heat vs. 23.9 citywide), driven by housing_within_1500m (+1.030°F) at an unmeasured grid cell in Cascade / Adamsville (Tract 13121007808). Tract 13121007808 has 49.5% car-free households (606 HH), 70.9% poverty, and 6.1% seniors 65+ (229 seniors).",
+        "provenance_ids": [],
+        "tract_no_vehicle_rate": 0.4947,
+        "tract_share_65_plus": 0.0614,
+        "tract_poverty_rate": 0.7092,
+        "passed_over_reason": "Lower composite heat + vulnerability priority score than funded sites",
+        "catchment": {
+          "radius_m": 800.0,
+          "tracts_within_radius": 1,
+          "population_within_radius": 3728,
+          "pop_65_plus_within_radius": 229,
+          "car_free_households_within_radius": 606,
+          "households_within_radius": 0,
+          "share_65_plus_within_radius": 0.0614,
+          "no_vehicle_rate_within_radius": 0.4947,
+          "pop_weighted_poverty_rate": 0.7092,
+          "tract_geo_ids": [
+            "13121007808"
+          ]
+        }
+      }
+    ],
+    "heat_frequency": null,
+    "equity_audit": null,
+    "proposal_markdown": "### Ranked Cooling-Center Sites — Atlanta, GA (`2,000 m` Minimum Spacing) [P1]\n\n- **Site #1 — Venetian Hills / Oakland City (`g_33.7172_-84.4426`, Tract `13121007603`):** Predicted **`+1.28 °F`** hotter than the Atlanta campaign mean (`82.1 °F`), priority score **`1.791`**, top driver `housing_within_1500m` (+1.120 °F), `56.4%` car-free households (`1,128` HH), `48.6%` poverty, `18.8%` seniors 65+ ([Map Pin](https://www.google.com/maps/search/?api=1&query=33.71715,-84.44260)) [P1]\n- **Site #2 — West End / Ashview Heights (`g_33.7397_-84.4128`, Tract `13121004200`):** Predicted **`+1.49 °F`** hotter than the Atlanta campaign mean (`82.1 °F`), priority score **`1.646`**, top driver `housing_within_1500m` (+1.449 °F), `41.0%` car-free households (`854` HH), `29.7%` poverty, `11.0%` seniors 65+ ([Map Pin](https://www.google.com/maps/search/?api=1&query=33.73965,-84.41283)) [P1]\n- **Site #3 — Mechanicsville / Summerhill (`g_33.7397_-84.3858`, Tract `13121004800`):** Predicted **`+1.35 °F`** hotter than the Atlanta campaign mean (`82.1 °F`), priority score **`1.566`**, top driver `housing_within_1500m` (+1.266 °F), `26.6%` car-free households (`936` HH), `38.7%` poverty, `8.6%` seniors 65+ ([Map Pin](https://www.google.com/maps/search/?api=1&query=33.73965,-84.38576)) [P1]\n\n### Candidate Site Comparison & Displacement Trade-Offs [P1]\n\n- **Site #1 (Venetian Hills / Oakland City, Tract `13121007603`) vs. Challenger Site #4 (Cascade / Adamsville, Tract `13121007808`):** Priority score delta `+0.539`, predicted offset delta `+0.31 °F`, no-vehicle rate delta `+6.9 pp` (`+522` car-free HH), poverty rate delta `-22.4 pp`, seniors 65+ share delta `+12.7 pp` [P1]\n- **Site #2 (West End / Ashview Heights, Tract `13121004200`) vs. Challenger Site #4 (Cascade / Adamsville, Tract `13121007808`):** Priority score delta `+0.394`, predicted offset delta `+0.52 °F`, no-vehicle rate delta `-8.5 pp` (`+248` car-free HH), poverty rate delta `-41.2 pp`, seniors 65+ share delta `+4.9 pp` [P1]\n- **Site #3 (Mechanicsville / Summerhill, Tract `13121004800`) vs. Challenger Site #4 (Cascade / Adamsville, Tract `13121007808`):** Priority score delta `+0.314`, predicted offset delta `+0.38 °F`, no-vehicle rate delta `-22.8 pp` (`+330` car-free HH), poverty rate delta `-32.2 pp`, seniors 65+ share delta `+2.4 pp` [P1]",
+    "proposal_sections": {
+      "why_these": "Selected sites maximize composite heat offset and transit-dependent / senior vulnerability while maintaining >= 2.0 km spacing [P1].",
+      "what_this_displaces": "Runner-up candidates either fall within the 2.0 km catchment spacing of a higher-ranked center or serve fewer car-free and senior residents [P1]."
+    },
+    "limitations": [
+      "Heat offsets come from a single afternoon Heat Watch campaign.",
+      "Catchment distances are straight-line (800 m), not walking-network routes.",
+      "The model predicts outdoor ambient heat offset, not indoor temperatures or health outcomes.",
+      "Seven years of GHCN station history show interannual variability, not a multi-decade climate trend.",
+      "Race and ethnicity are never model or ranking inputs; they appear only in post-hoc equity auditing."
+    ],
+    "model_version": "offset_model_v1",
+    "generated_at": "sample"
+  }
+}

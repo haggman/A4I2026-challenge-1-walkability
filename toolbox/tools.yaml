@@ -1,0 +1,464 @@
+# toolbox/tools.yaml
+# MCP Toolbox for Databases configuration for the Atlanta Urban Heat Planning Assistant (heat-toolbox).
+# Wraps ONLY verified objects in a4i_semantic and a4i_ml from latest origin/main.
+
+sources:
+  heat-bq:
+    kind: bigquery
+    project: qwiklabs-gcp-04-ec3596addc43
+    location: US
+
+tools:
+  explain_point:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Online BigQuery ML ML.EXPLAIN_PREDICT query on a4i_ml.offset_model_v1 via
+      a4i_ml.point_features for (lat, lon). Returns predicted_offset_f (°F vs. Atlanta
+      campaign average 82.062°F), baseline_offset_f, in_footprint boolean, nearest
+      tract geo_id, and top 5 physical/built-environment feature attributions.
+    parameters:
+      - name: lat
+        type: float
+        description: Latitude in decimal degrees (WGS84, e.g. 33.7195).
+      - name: lon
+        type: float
+        description: Longitude in decimal degrees (WGS84, e.g. -84.4252).
+    statement: |
+      SELECT
+        e.point_id,
+        e.lat,
+        e.lon,
+        e.geo_id,
+        e.in_footprint,
+        ROUND(e.predicted_offset_f, 2)        AS predicted_offset_f,
+        ROUND(e.baseline_prediction_value, 2) AS baseline_offset_f,
+        ROUND(fp.campaign_mean_f, 3)          AS campaign_mean_f,
+        TO_JSON_STRING(ARRAY(
+          SELECT AS STRUCT a.feature, ROUND(a.attribution, 2) AS attribution_f
+          FROM UNNEST(e.top_feature_attributions) a
+          ORDER BY ABS(a.attribution) DESC
+        )) AS drivers_json,
+        ROUND(e.approximation_error, 3)       AS approximation_error
+      FROM ML.EXPLAIN_PREDICT(
+        MODEL `qwiklabs-gcp-04-ec3596addc43.a4i_ml.offset_model_v1`,
+        (SELECT * FROM `qwiklabs-gcp-04-ec3596addc43.a4i_ml.point_features`([STRUCT('query' AS point_id, @lat AS lat, @lon AS lon)])),
+        STRUCT(5 AS top_k_features)
+      ) e
+      CROSS JOIN `qwiklabs-gcp-04-ec3596addc43.a4i_ml.campaign_footprint` fp
+      LIMIT 1
+
+  rank_sites_pool:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Return the top candidate cooling-center tracts from a4i_ml.grid_predictions
+      (generalized sql/serve/rank_sites.sql: one best grid cell per census tract scored
+      by 0.35*z_hazard + 0.25*z_novehicle + 0.20*z_age65 + 0.15*z_poverty + 0.05*z_pop).
+      Zero race columns. Used by rank_candidate_sites to apply greedy spacing (>=2000m).
+    parameters:
+      - name: unmeasured_only
+        type: boolean
+        description: If true, restrict candidate pool to unmeasured grid cells (>150m from sensors).
+      - name: limit
+        type: integer
+        description: Maximum number of best-per-tract candidates to return (e.g. 25).
+    statement: |
+      WITH z AS (
+        SELECT
+          *,
+          (predicted_offset_f - AVG(predicted_offset_f) OVER ()) / NULLIF(STDDEV(predicted_offset_f) OVER (), 0) AS z_hazard,
+          (no_vehicle_rate    - AVG(no_vehicle_rate)    OVER ()) / NULLIF(STDDEV(no_vehicle_rate)    OVER (), 0) AS z_novehicle,
+          (share_65_plus      - AVG(share_65_plus)      OVER ()) / NULLIF(STDDEV(share_65_plus)      OVER (), 0) AS z_age65,
+          (poverty_rate       - AVG(poverty_rate)       OVER ()) / NULLIF(STDDEV(poverty_rate)       OVER (), 0) AS z_poverty,
+          (total_pop          - AVG(total_pop)          OVER ()) / NULLIF(STDDEV(total_pop)          OVER (), 0) AS z_pop
+        FROM `qwiklabs-gcp-04-ec3596addc43.a4i_ml.grid_predictions`
+        WHERE predicted_offset_f > 0
+          AND total_pop >= 1000
+          AND (NOT @unmeasured_only OR unmeasured)
+      ),
+      scored AS (
+        SELECT
+          point_id,
+          ROUND(lat, 5) AS lat,
+          ROUND(lon, 5) AS lon,
+          geo_id,
+          ROUND(predicted_offset_f, 2) AS predicted_offset_f,
+          unmeasured,
+          TO_JSON_STRING(drivers) AS drivers_json,
+          total_pop,
+          pop_65_plus,
+          ROUND(share_65_plus, 4) AS share_65_plus,
+          car_free_households,
+          ROUND(median_age, 1) AS median_age,
+          ROUND(poverty_rate, 4) AS poverty_rate,
+          ROUND(no_vehicle_rate, 4) AS no_vehicle_rate,
+          ROUND(median_income, 0) AS median_income,
+          model_version,
+          ROUND(
+              0.35 * COALESCE(z_hazard, 0)
+            + 0.25 * COALESCE(z_novehicle, 0)
+            + 0.20 * COALESCE(z_age65, 0)
+            + 0.15 * COALESCE(z_poverty, 0)
+            + 0.05 * COALESCE(z_pop, 0),
+            3
+          ) AS priority_score
+        FROM z
+      ),
+      best_per_tract AS (
+        SELECT *
+        FROM scored
+        QUALIFY ROW_NUMBER() OVER (PARTITION BY geo_id ORDER BY priority_score DESC, unmeasured DESC, point_id) = 1
+      )
+      SELECT *
+      FROM best_per_tract
+      ORDER BY priority_score DESC, point_id
+      LIMIT @limit
+
+  vulnerable_population:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Query a4i_semantic.vulnerable_population(lat, lon, radius_m) for walkable catchment
+      demographics (population, seniors 65+, car-free households, no-vehicle rate,
+      population-weighted poverty rate) within radius_m meters (capped at 5000m).
+    parameters:
+      - name: lat
+        type: float
+        description: Latitude in decimal degrees (WGS84).
+      - name: lon
+        type: float
+        description: Longitude in decimal degrees (WGS84).
+      - name: radius_m
+        type: float
+        description: Walkable catchment radius in meters (default 800, max 5000).
+    statement: |
+      SELECT
+        query_lat,
+        query_lon,
+        radius_m,
+        tracts_within_radius,
+        population_within_radius,
+        pop_65_plus_within_radius,
+        car_free_households_within_radius,
+        households_within_radius,
+        ROUND(share_65_plus_within_radius, 4) AS share_65_plus_within_radius,
+        ROUND(no_vehicle_rate_within_radius, 4) AS no_vehicle_rate_within_radius,
+        ROUND(pop_weighted_poverty_rate, 4) AS pop_weighted_poverty_rate,
+        TO_JSON_STRING(tract_geo_ids) AS tract_geo_ids_json
+      FROM `qwiklabs-gcp-04-ec3596addc43.a4i_semantic.vulnerable_population`(
+        @lat, @lon, LEAST(GREATEST(@radius_m, 100.0), 5000.0)
+      )
+      LIMIT 1
+
+  site_hot_days:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Query a4i_semantic.site_hot_days(offset_f) to translate a site's predicted heat
+      offset (°F above city mean) into expected annual days >= 95°F-equivalent heat
+      compared against the Atlanta GHCN station baseline (23.9 days/yr, 2019-2025).
+    parameters:
+      - name: offset_f
+        type: float
+        description: Predicted heat offset in °F above city mean (-10.0 to 15.0).
+    statement: |
+      SELECT
+        offset_f,
+        station_threshold_for_95f_equiv,
+        mean_days_ge_95f_equiv_per_yr,
+        city_baseline_days_ge_95f_per_yr,
+        extra_days_ge_95f_equiv_per_yr,
+        mean_days_ge_90f_equiv_per_yr,
+        mean_days_ge_100f_equiv_per_yr,
+        full_years_counted
+      FROM `qwiklabs-gcp-04-ec3596addc43.a4i_semantic.site_hot_days`(
+        LEAST(GREATEST(@offset_f, -10.0), 15.0)
+      )
+      LIMIT 1
+
+  city_heat_days_by_year:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Return multi-year Atlanta GHCN weather-station hot-day frequency (2019-2025) from
+      a4i_semantic.metric_city_heat_days_by_year (days >= 90°F, >= 95°F, >= 100°F, means,
+      and 7-year OLS slope). Never use Heat Watch traverse data for frequency questions.
+    statement: |
+      SELECT
+        year,
+        days_reported,
+        days_ge_90_f,
+        days_ge_95_f,
+        days_ge_100_f,
+        hottest_temp_f,
+        mean_days_ge_90_f,
+        mean_days_ge_95_f,
+        mean_days_ge_100_f,
+        ols_slope_days_ge_95_per_yr
+      FROM `qwiklabs-gcp-04-ec3596addc43.a4i_semantic.metric_city_heat_days_by_year`
+      ORDER BY year
+      LIMIT 20
+
+  tract_profile:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Return the nearest census tract in a4i_semantic.dim_tract to (lat, lon) with
+      population, seniors 65+, car-free households, no-vehicle rate, poverty rate,
+      median income, median age, and built-environment densities. Zero race columns.
+    parameters:
+      - name: lat
+        type: float
+        description: Latitude in decimal degrees (WGS84).
+      - name: lon
+        type: float
+        description: Longitude in decimal degrees (WGS84).
+    statement: |
+      SELECT
+        geo_id,
+        centroid_lat,
+        centroid_lon,
+        ROUND(ST_DISTANCE(ST_GEOGPOINT(centroid_lon, centroid_lat), ST_GEOGPOINT(@lon, @lat)), 0) AS meters_to_tract_center,
+        population,
+        pop_65_plus,
+        ROUND(share_65_plus, 4) AS share_65_plus,
+        car_free_households,
+        households,
+        housing_units,
+        ROUND(no_vehicle_rate, 4) AS no_vehicle_rate,
+        ROUND(poverty_rate, 4) AS poverty_rate,
+        ROUND(median_income, 0) AS median_income,
+        ROUND(median_age, 1) AS median_age,
+        median_year_built,
+        ROUND(pop_density_km2, 1) AS pop_density_km2,
+        ROUND(housing_density_km2, 1) AS housing_density_km2,
+        ROUND(water_share, 4) AS water_share
+      FROM `qwiklabs-gcp-04-ec3596addc43.a4i_semantic.dim_tract`
+      ORDER BY meters_to_tract_center
+      LIMIT 1
+
+  equity_audit:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Run the post-hoc equity audit (sql/audit/audit.sql) comparing the selected cooling-center
+      census tracts (geo_id_1, geo_id_2, geo_id_3) against the population-weighted Atlanta
+      citywide baseline. Output check only; race is never a model or ranking input.
+    parameters:
+      - name: geo_id_1
+        type: string
+        description: First recommended 11-character census tract GEOID (e.g. '13121007603').
+      - name: geo_id_2
+        type: string
+        description: Second recommended 11-character census tract GEOID (e.g. '13121004200').
+      - name: geo_id_3
+        type: string
+        description: Third recommended 11-character census tract GEOID (e.g. '13121004800').
+    statement: |
+      WITH t AS (
+        SELECT
+          tr.geo_id,
+          tr.population AS total_pop,
+          tr.pop_65_plus,
+          tr.share_65_plus,
+          tr.car_free_households,
+          tr.median_income,
+          tr.poverty_rate,
+          tr.no_vehicle_rate,
+          tr.median_age,
+          NTILE(5) OVER (ORDER BY tr.poverty_rate) = 5 AS top_poverty_quintile,
+          SAFE_DIVIDE(acs.black_pop, acs.total_pop) AS black_share,
+          SAFE_DIVIDE(acs.white_pop, acs.total_pop) AS white_share
+        FROM `qwiklabs-gcp-04-ec3596addc43.a4i_semantic.dim_tract` tr
+        LEFT JOIN `bigquery-public-data.census_bureau_acs.censustract_2020_5yr` acs
+          ON LPAD(CAST(acs.geo_id AS STRING), 11, '0') = tr.geo_id
+        WHERE tr.population > 0
+      ),
+      agg AS (
+        SELECT
+          grp,
+          SAFE_DIVIDE(SUM(total_pop * median_income),   SUM(IF(median_income   IS NULL, 0, total_pop))) AS median_income,
+          SAFE_DIVIDE(SUM(total_pop * poverty_rate),    SUM(IF(poverty_rate    IS NULL, 0, total_pop))) AS poverty_rate,
+          SAFE_DIVIDE(SUM(total_pop * no_vehicle_rate), SUM(IF(no_vehicle_rate IS NULL, 0, total_pop))) AS no_vehicle_rate,
+          SAFE_DIVIDE(SUM(pop_65_plus),                 SUM(total_pop))                                 AS share_65_plus,
+          SAFE_DIVIDE(SUM(total_pop * median_age),      SUM(IF(median_age      IS NULL, 0, total_pop))) AS median_age,
+          SAFE_DIVIDE(SUM(IF(top_poverty_quintile, total_pop, 0)), SUM(total_pop))                      AS share_in_top_poverty_quintile,
+          SAFE_DIVIDE(SUM(total_pop * black_share),     SUM(total_pop))                                 AS posthoc_black_share,
+          SAFE_DIVIDE(SUM(total_pop * white_share),     SUM(total_pop))                                 AS posthoc_white_share,
+          SUM(total_pop) AS people,
+          SUM(pop_65_plus) AS seniors_65_plus,
+          SUM(car_free_households) AS car_free_hh
+        FROM (
+          SELECT 'city' AS grp, * FROM t
+          UNION ALL
+          SELECT 'sites' AS grp, * FROM t WHERE geo_id IN (@geo_id_1, @geo_id_2, @geo_id_3)
+        )
+        GROUP BY grp
+      )
+      SELECT
+        metric,
+        ROUND(MAX(IF(grp = 'sites', v, NULL)), 4) AS sites_value,
+        ROUND(MAX(IF(grp = 'city',  v, NULL)), 4) AS city_value,
+        ROUND(SAFE_DIVIDE(MAX(IF(grp = 'sites', v, NULL)), MAX(IF(grp = 'city', v, NULL))), 2) AS ratio
+      FROM agg,
+      UNNEST([
+        STRUCT('1_poverty_rate' AS metric, poverty_rate AS v),
+        ('2_no_vehicle_rate', no_vehicle_rate),
+        ('3_share_65_plus', share_65_plus),
+        ('4_median_income_usd', median_income),
+        ('5_median_age_years', median_age),
+        ('6_share_in_top_poverty_quintile', share_in_top_poverty_quintile),
+        ('7_posthoc_black_resident_share', posthoc_black_share),
+        ('8_posthoc_white_resident_share', posthoc_white_share),
+        ('9_people_in_tracts', CAST(people AS FLOAT64)),
+        ('9b_seniors_65_plus_in_tracts', CAST(seniors_65_plus AS FLOAT64)),
+        ('9c_car_free_hh_in_tracts', CAST(car_free_hh AS FLOAT64))
+      ])
+      GROUP BY metric
+      ORDER BY metric
+
+  hottest_measured_cells:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Return the hottest measured ~150m Heat Watch cells from a4i_semantic.fact_heat_cell
+      with at least min_readings sensor observations, ordered by offset_f DESC. Also includes
+      total study-area cell count and tract count for generic dataset questions.
+    parameters:
+      - name: min_readings
+        type: integer
+        description: Minimum traverse readings per cell (default 5).
+      - name: limit
+        type: integer
+        description: Maximum number of cells to return (1..50, default 10).
+    statement: |
+      WITH counts AS (
+        SELECT
+          (SELECT COUNT(*) FROM `qwiklabs-gcp-04-ec3596addc43.a4i_semantic.dim_tract`) AS total_tracts,
+          (SELECT COUNT(*) FROM `qwiklabs-gcp-04-ec3596addc43.a4i_semantic.fact_heat_cell`) AS total_measured_cells
+      )
+      SELECT
+        c.cell_id,
+        c.block_id,
+        ROUND(c.lat, 5) AS lat,
+        ROUND(c.lon, 5) AS lon,
+        c.n_readings,
+        ROUND(c.mean_temp_f, 2) AS mean_temp_f,
+        ROUND(c.campaign_mean_temp_f, 2) AS campaign_mean_temp_f,
+        ROUND(c.offset_f, 2) AS offset_f,
+        c.nearest_geo_id,
+        counts.total_tracts,
+        counts.total_measured_cells
+      FROM `qwiklabs-gcp-04-ec3596addc43.a4i_semantic.fact_heat_cell` c
+      CROSS JOIN counts
+      WHERE c.n_readings >= GREATEST(@min_readings, 1)
+      ORDER BY c.offset_f DESC
+      LIMIT @limit
+
+  hottest_predicted_cells:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Return the hottest predicted ~250m grid cells from a4i_ml.grid_predictions
+      ordered by predicted_offset_f DESC.
+    parameters:
+      - name: unmeasured_only
+        type: boolean
+        description: If true, restrict to unmeasured grid cells (>150m from sensors).
+      - name: limit
+        type: integer
+        description: Maximum number of cells to return (1..50, default 10).
+    statement: |
+      SELECT
+        point_id,
+        ROUND(lat, 5) AS lat,
+        ROUND(lon, 5) AS lon,
+        geo_id,
+        ROUND(predicted_offset_f, 2) AS predicted_offset_f,
+        unmeasured,
+        total_pop,
+        pop_65_plus,
+        ROUND(share_65_plus, 4) AS share_65_plus,
+        car_free_households,
+        ROUND(no_vehicle_rate, 4) AS no_vehicle_rate,
+        ROUND(poverty_rate, 4) AS poverty_rate,
+        ROUND(median_income, 0) AS median_income,
+        model_version
+      FROM `qwiklabs-gcp-04-ec3596addc43.a4i_ml.grid_predictions`
+      WHERE (NOT @unmeasured_only OR unmeasured)
+      ORDER BY predicted_offset_f DESC
+      LIMIT @limit
+
+  city_baseline:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Return the population-weighted Atlanta citywide baseline across 350 populated
+      census tracts from a4i_semantic.audit_city_baseline.
+    statement: |
+      SELECT
+        populated_tracts,
+        total_population,
+        total_pop_65_plus,
+        total_car_free_households,
+        ROUND(city_median_income_usd, 0) AS city_median_income_usd,
+        ROUND(city_poverty_rate, 4) AS city_poverty_rate,
+        ROUND(city_no_vehicle_rate, 4) AS city_no_vehicle_rate,
+        ROUND(city_share_65_plus, 4) AS city_share_65_plus,
+        ROUND(city_median_age_years, 2) AS city_median_age_years,
+        ROUND(city_share_in_top_poverty_quintile, 4) AS city_share_in_top_poverty_quintile,
+        ROUND(top_poverty_quintile_threshold, 4) AS top_poverty_quintile_threshold
+      FROM `qwiklabs-gcp-04-ec3596addc43.a4i_semantic.audit_city_baseline`
+      LIMIT 1
+
+  tract_layer:
+    kind: bigquery-sql
+    source: heat-bq
+    description: >-
+      Every Atlanta census tract in a4i_semantic.dim_tract with its TIGER/Line polygon
+      (public domain, simplified to simplify_m meters) as GeoJSON, the tract mean of
+      a4i_ml.grid_predictions.predicted_offset_f, and no-vehicle, 65+, poverty and population.
+      Feeds the heat-ui choropleth and equity-audit scatter.
+    parameters:
+      - name: simplify_m
+        type: float
+        description: Polygon simplification tolerance in meters (clamped to 5-100; 15 for the UI).
+    statement: |
+      WITH preds AS (
+        SELECT geo_id, ROUND(AVG(predicted_offset_f), 2) AS predicted_offset_f
+        FROM `qwiklabs-gcp-04-ec3596addc43.a4i_ml.grid_predictions`
+        GROUP BY geo_id
+      ),
+      shapes AS (
+        SELECT
+          LPAD(TRIM(CAST(geo_id AS STRING)), 11, '0') AS geo_id,
+          ST_SIMPLIFY(tract_geom, LEAST(GREATEST(@simplify_m, 5.0), 100.0)) AS geom
+        FROM `bigquery-public-data.geo_census_tracts.us_census_tracts_national`
+      )
+      SELECT
+        d.geo_id,
+        p.predicted_offset_f,
+        ROUND(d.no_vehicle_rate, 4) AS no_vehicle_rate,
+        ROUND(d.share_65_plus, 4) AS share_65_plus,
+        ROUND(d.poverty_rate, 4) AS poverty_rate,
+        d.population,
+        ST_ASGEOJSON(s.geom) AS geometry_json
+      FROM `qwiklabs-gcp-04-ec3596addc43.a4i_semantic.dim_tract` d
+      JOIN shapes s USING (geo_id)
+      LEFT JOIN preds p USING (geo_id)
+      ORDER BY d.geo_id
+
+toolsets:
+  heat-planner:
+    - explain_point
+    - rank_sites_pool
+    - vulnerable_population
+    - site_hot_days
+    - city_heat_days_by_year
+    - tract_profile
+    - equity_audit
+    - hottest_measured_cells
+    - hottest_predicted_cells
+    - city_baseline
+    - tract_layer

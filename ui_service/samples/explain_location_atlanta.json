@@ -1,0 +1,434 @@
+{
+  "schema_version": "1.0.0",
+  "status": "ok",
+  "intent": {
+    "schema_version": "1.0.0",
+    "intent_type": "explain_location",
+    "city": "Atlanta",
+    "location_query": "venetian hills",
+    "lat": 33.7195,
+    "lon": -84.4252,
+    "k_sites": 3,
+    "min_spacing_m": 2000.0,
+    "radius_m": 800.0,
+    "forecast_high_f": 98.0,
+    "unmeasured_only": false,
+    "compared_ranks": [],
+    "missing_fields": [],
+    "clarification_question": null,
+    "refusal_reason": null,
+    "status": "ok",
+    "k": 3,
+    "threshold_f": 95.0,
+    "candidate_ranks": [],
+    "missing_parameters": [],
+    "clarifying_question": null,
+    "refusal_explanation": null
+  },
+  "data_result": {
+    "schema_version": "1.0.0",
+    "status": "ok",
+    "intent_type": "explain_location",
+    "sites": [
+      {
+        "rank": 1,
+        "point_id": "p_33.7195_-84.4252",
+        "lat": 33.7195,
+        "lon": -84.4252,
+        "geo_id": "13121006602",
+        "neighborhood": "Near Venetian Hills / Oakland City (Tract 13121006602)",
+        "predicted_offset_f": 0.51,
+        "campaign_mean_f": 82.1,
+        "forecast_high_f": 98.0,
+        "forecast_implied_f": 98.5,
+        "priority_score": 0.51,
+        "unmeasured": true,
+        "spacing_conflict_with_rank": null,
+        "drivers": [
+          {
+            "feature": "housing_within_1500m",
+            "attribution": 0.39
+          },
+          {
+            "feature": "median_year_built",
+            "attribution": -0.15
+          },
+          {
+            "feature": "water_share",
+            "attribution": 0.11
+          },
+          {
+            "feature": "mean_year_built_1500m",
+            "attribution": 0.1
+          },
+          {
+            "feature": "pop_density_km2",
+            "attribution": 0.05
+          }
+        ],
+        "demographics": {
+          "geo_id": "13121006602",
+          "radius_m": 800.0,
+          "tract_count": 1,
+          "tract_geo_ids": [
+            "13121006602"
+          ],
+          "total_pop": 875,
+          "pop_65_plus": 118,
+          "share_65_plus": 0.1349,
+          "households": 373,
+          "car_free_households": 159,
+          "no_vehicle_rate": 0.4263,
+          "poverty_rate": 0.3486,
+          "median_income": 25568.0
+        },
+        "hot_days": {
+          "city_days_ge_90f_per_yr": 78.0,
+          "city_days_ge_95f_per_yr": 23.9,
+          "city_days_ge_100f_per_yr": 1.6,
+          "expected_days_ge_90f_equiv": 78.0,
+          "expected_days_ge_95f_equiv": 23.9,
+          "expected_days_ge_100f_equiv": 1.6,
+          "extra_days_ge_95f_equiv": 11.1
+        },
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=33.71950,-84.42520",
+        "google_maps_walking_url": "https://www.google.com/maps/dir/?api=1&destination=33.71950,-84.42520&travelmode=walking",
+        "why_here": "Predicted +0.51°F relative to the Atlanta campaign average (82.1°F), driven primarily by housing_within_1500m (+0.390°F) in Near Venetian Hills / Oakland City (Tract 13121006602) (Tract 13121006602)."
+      }
+    ],
+    "runner_up_sites": [],
+    "comparison_table": null,
+    "heat_frequency": null,
+    "equity_audit": null,
+    "recommendation": null,
+    "provenance": [
+      {
+        "schema_version": "1.0.0",
+        "provenance_id": "P1",
+        "source_type": "mcp_toolbox",
+        "tool_name": "resolve_location",
+        "mcp_tool_name": "explain_point",
+        "sql_object": "a4i_ml.offset_model_v1 + a4i_ml.point_features",
+        "parameters": {
+          "lat": 33.7195,
+          "lon": -84.4252
+        },
+        "row_count": 1,
+        "model_version": "offset_model_v1",
+        "queried_at_utc": "2026-10-27T19:02:38.409812+00:00",
+        "timestamp_utc": "2026-10-27T19:02:38.409812+00:00",
+        "latency_ms": 1280
+      },
+      {
+        "schema_version": "1.0.0",
+        "provenance_id": "P2",
+        "source_type": "mcp_toolbox",
+        "tool_name": "explain_heat_offset",
+        "mcp_tool_name": "explain_point",
+        "sql_object": "a4i_ml.offset_model_v1 + a4i_ml.point_features",
+        "parameters": {
+          "lat": 33.7195,
+          "lon": -84.4252
+        },
+        "row_count": 1,
+        "model_version": "offset_model_v1",
+        "queried_at_utc": "2026-10-27T19:02:39.219384+00:00",
+        "timestamp_utc": "2026-10-27T19:02:39.219384+00:00",
+        "latency_ms": 1280
+      },
+      {
+        "schema_version": "1.0.0",
+        "provenance_id": "P3",
+        "source_type": "mcp_toolbox",
+        "tool_name": "explain_heat_offset",
+        "mcp_tool_name": "site_hot_days",
+        "sql_object": "a4i_semantic.station_daily_city",
+        "parameters": {
+          "offset_f": 0.51
+        },
+        "row_count": 1,
+        "model_version": "offset_model_v1",
+        "queried_at_utc": "2026-10-27T19:02:40.057517+00:00",
+        "timestamp_utc": "2026-10-27T19:02:40.057517+00:00",
+        "latency_ms": 1280
+      },
+      {
+        "schema_version": "1.0.0",
+        "provenance_id": "P4",
+        "source_type": "mcp_toolbox",
+        "tool_name": "explain_heat_offset",
+        "mcp_tool_name": "tract_profile",
+        "sql_object": "a4i_semantic.tract_features",
+        "parameters": {
+          "lat": 33.7195,
+          "lon": -84.4252
+        },
+        "row_count": 1,
+        "model_version": "offset_model_v1",
+        "queried_at_utc": "2026-10-27T19:02:41.195523+00:00",
+        "timestamp_utc": "2026-10-27T19:02:41.195523+00:00",
+        "latency_ms": 1280
+      },
+      {
+        "schema_version": "1.0.0",
+        "provenance_id": "P5",
+        "source_type": "mcp_toolbox",
+        "tool_name": "explain_heat_offset",
+        "mcp_tool_name": "vulnerable_population",
+        "sql_object": "a4i_semantic.tract_features",
+        "parameters": {
+          "lat": 33.7195,
+          "lon": -84.4252,
+          "radius_m": 800.0
+        },
+        "row_count": 1,
+        "model_version": "offset_model_v1",
+        "queried_at_utc": "2026-10-27T19:02:42.405554+00:00",
+        "timestamp_utc": "2026-10-27T19:02:42.405554+00:00",
+        "latency_ms": 1280
+      }
+    ],
+    "error_message": null,
+    "rows": [],
+    "summary_metrics": {
+      "sites_returned": 1
+    }
+  },
+  "narrative_markdown": "### Street-Level Heat Offset Assessment — Near Venetian Hills / Oakland City (Tract 13121006602) (Tract `13121006602`) [P1]\n\n- **Coordinates:** `33.7195, -84.4252` (`unmeasured` grid cell) · [Google Maps Pin](https://www.google.com/maps/search/?api=1&query=33.71950,-84.42520) · [Walking Directions](https://www.google.com/maps/dir/?api=1&destination=33.71950,-84.42520&travelmode=walking) [P1]\n- **Predicted Heat Offset (`a4i_ml.offset_model_v1`):** **`+0.51 °F`** relative to the Atlanta Heat Watch campaign mean (`82.1 °F`); on a `98 °F` forecast day, that implies conditions feeling closer to `~98.5 °F` [P1]\n- **Top `ML.EXPLAIN_PREDICT` Physical Driver:** `housing_within_1500m` (+0.390 °F) [P1]\n- **GHCN Heat Frequency (`2019–2025`):** `~23.9` days/yr of `>=95 °F`-equivalent heat vs. `23.9` days/yr citywide (`+11.1` extra hot days/yr) [P1]\n- **Walkable Catchment (`800 m`):** `875` residents, `159` car-free households (`42.6%`), `118` seniors 65+ (`13.5%`), `34.9%` poverty [P1]",
+  "verification": {
+    "passed": true,
+    "ungrounded_numbers": [],
+    "framing_violations": [],
+    "missing_citations": [],
+    "fallback_used": false
+  },
+  "latency_ms": 6402,
+  "trace_id": "tr_sample_explain_location_atlanta",
+  "narrative": "### Street-Level Heat Offset Assessment — Near Venetian Hills / Oakland City (Tract 13121006602) (Tract `13121006602`) [P1]\n\n- **Coordinates:** `33.7195, -84.4252` (`unmeasured` grid cell) · [Google Maps Pin](https://www.google.com/maps/search/?api=1&query=33.71950,-84.42520) · [Walking Directions](https://www.google.com/maps/dir/?api=1&destination=33.71950,-84.42520&travelmode=walking) [P1]\n- **Predicted Heat Offset (`a4i_ml.offset_model_v1`):** **`+0.51 °F`** relative to the Atlanta Heat Watch campaign mean (`82.1 °F`); on a `98 °F` forecast day, that implies conditions feeling closer to `~98.5 °F` [P1]\n- **Top `ML.EXPLAIN_PREDICT` Physical Driver:** `housing_within_1500m` (+0.390 °F) [P1]\n- **GHCN Heat Frequency (`2019–2025`):** `~23.9` days/yr of `>=95 °F`-equivalent heat vs. `23.9` days/yr citywide (`+11.1` extra hot days/yr) [P1]\n- **Walkable Catchment (`800 m`):** `875` residents, `159` car-free households (`42.6%`), `118` seniors 65+ (`13.5%`), `34.9%` poverty [P1]",
+  "citations": [
+    {
+      "schema_version": "1.0.0",
+      "provenance_id": "P1",
+      "source_type": "mcp_toolbox",
+      "tool_name": "resolve_location",
+      "mcp_tool_name": "explain_point",
+      "sql_object": "a4i_ml.offset_model_v1 + a4i_ml.point_features",
+      "parameters": {
+        "lat": 33.7195,
+        "lon": -84.4252
+      },
+      "row_count": 1,
+      "model_version": "offset_model_v1",
+      "queried_at_utc": "2026-10-27T19:02:38.409812+00:00",
+      "timestamp_utc": "2026-10-27T19:02:38.409812+00:00",
+      "latency_ms": 1280
+    },
+    {
+      "schema_version": "1.0.0",
+      "provenance_id": "P2",
+      "source_type": "mcp_toolbox",
+      "tool_name": "explain_heat_offset",
+      "mcp_tool_name": "explain_point",
+      "sql_object": "a4i_ml.offset_model_v1 + a4i_ml.point_features",
+      "parameters": {
+        "lat": 33.7195,
+        "lon": -84.4252
+      },
+      "row_count": 1,
+      "model_version": "offset_model_v1",
+      "queried_at_utc": "2026-10-27T19:02:39.219384+00:00",
+      "timestamp_utc": "2026-10-27T19:02:39.219384+00:00",
+      "latency_ms": 1280
+    },
+    {
+      "schema_version": "1.0.0",
+      "provenance_id": "P3",
+      "source_type": "mcp_toolbox",
+      "tool_name": "explain_heat_offset",
+      "mcp_tool_name": "site_hot_days",
+      "sql_object": "a4i_semantic.station_daily_city",
+      "parameters": {
+        "offset_f": 0.51
+      },
+      "row_count": 1,
+      "model_version": "offset_model_v1",
+      "queried_at_utc": "2026-10-27T19:02:40.057517+00:00",
+      "timestamp_utc": "2026-10-27T19:02:40.057517+00:00",
+      "latency_ms": 1280
+    },
+    {
+      "schema_version": "1.0.0",
+      "provenance_id": "P4",
+      "source_type": "mcp_toolbox",
+      "tool_name": "explain_heat_offset",
+      "mcp_tool_name": "tract_profile",
+      "sql_object": "a4i_semantic.tract_features",
+      "parameters": {
+        "lat": 33.7195,
+        "lon": -84.4252
+      },
+      "row_count": 1,
+      "model_version": "offset_model_v1",
+      "queried_at_utc": "2026-10-27T19:02:41.195523+00:00",
+      "timestamp_utc": "2026-10-27T19:02:41.195523+00:00",
+      "latency_ms": 1280
+    },
+    {
+      "schema_version": "1.0.0",
+      "provenance_id": "P5",
+      "source_type": "mcp_toolbox",
+      "tool_name": "explain_heat_offset",
+      "mcp_tool_name": "vulnerable_population",
+      "sql_object": "a4i_semantic.tract_features",
+      "parameters": {
+        "lat": 33.7195,
+        "lon": -84.4252,
+        "radius_m": 800.0
+      },
+      "row_count": 1,
+      "model_version": "offset_model_v1",
+      "queried_at_utc": "2026-10-27T19:02:42.405554+00:00",
+      "timestamp_utc": "2026-10-27T19:02:42.405554+00:00",
+      "latency_ms": 1280
+    }
+  ],
+  "total_latency_ms": 6402,
+  "error_message": null,
+  "recommendation": {
+    "city": "Atlanta",
+    "track": "budget",
+    "scenario": "3 permanent walkable cooling centers (This budget cycle)",
+    "forecast_high_f": 98.0,
+    "campaign_mean_f": 82.062,
+    "sites": [
+      {
+        "rank": 1,
+        "point_id": "p_33.7195_-84.4252",
+        "lat": 33.7195,
+        "lon": -84.4252,
+        "geo_id": "13121006602",
+        "neighborhood": "Near Venetian Hills / Oakland City (Tract 13121006602)",
+        "predicted_offset_f": 0.51,
+        "campaign_mean_f": 82.1,
+        "forecast_high_f": 98.0,
+        "forecast_implied_f": 98.5,
+        "priority_score": 0.51,
+        "unmeasured": true,
+        "spacing_conflict_with_rank": null,
+        "drivers": [
+          {
+            "feature": "housing_within_1500m",
+            "label": "Homes within 1.5 km",
+            "attribution_f": 0.39,
+            "attribution": 0.39
+          },
+          {
+            "feature": "median_year_built",
+            "label": "Building age",
+            "attribution_f": -0.15,
+            "attribution": -0.15
+          },
+          {
+            "feature": "water_share",
+            "label": "Water nearby",
+            "attribution_f": 0.11,
+            "attribution": 0.11
+          },
+          {
+            "feature": "mean_year_built_1500m",
+            "label": "Building age within 1.5 km",
+            "attribution_f": 0.1,
+            "attribution": 0.1
+          },
+          {
+            "feature": "pop_density_km2",
+            "label": "Street density",
+            "attribution_f": 0.05,
+            "attribution": 0.05
+          }
+        ],
+        "demographics": {
+          "geo_id": "13121006602",
+          "radius_m": 800.0,
+          "tract_count": 1,
+          "tract_geo_ids": [
+            "13121006602"
+          ],
+          "total_pop": 875,
+          "pop_65_plus": 118,
+          "share_65_plus": 0.1349,
+          "households": 373,
+          "car_free_households": 159,
+          "no_vehicle_rate": 0.4263,
+          "poverty_rate": 0.3486,
+          "median_income": 25568.0
+        },
+        "hot_days": {
+          "offset_f": 0.51,
+          "mean_days_ge_95f_equiv_per_yr": 23.9,
+          "city_baseline_days_ge_95f_per_yr": 23.9,
+          "extra_days_ge_95f_equiv_per_yr": 11.1,
+          "mean_days_ge_90f_equiv_per_yr": 78.0,
+          "mean_days_ge_100f_equiv_per_yr": 1.6,
+          "full_years_counted": 7,
+          "city_days_ge_90f_per_yr": 78.0,
+          "city_days_ge_95f_per_yr": 23.9,
+          "city_days_ge_100f_per_yr": 1.6,
+          "expected_days_ge_90f_equiv": 78.0,
+          "expected_days_ge_95f_equiv": 23.9,
+          "expected_days_ge_100f_equiv": 1.6,
+          "extra_days_ge_95f_equiv": 11.1
+        },
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=33.71950,-84.42520",
+        "google_maps_walking_url": "https://www.google.com/maps/dir/?api=1&destination=33.71950,-84.42520&travelmode=walking",
+        "why_here": "Predicted +0.51°F relative to the Atlanta campaign average (82.1°F), driven primarily by housing_within_1500m (+0.390°F) in Near Venetian Hills / Oakland City (Tract 13121006602) (Tract 13121006602).",
+        "site_id": "p_33.7195_-84.4252",
+        "address_hint": "Near Venetian Hills / Oakland City (Tract 13121006602)",
+        "implied_local_high_f": 98.5,
+        "why": "Predicted +0.51°F relative to the Atlanta campaign average (82.1°F), driven primarily by housing_within_1500m (+0.390°F) in Near Venetian Hills / Oakland City (Tract 13121006602) (Tract 13121006602).",
+        "provenance_ids": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "tract_no_vehicle_rate": 0.4263,
+        "tract_share_65_plus": 0.1349,
+        "tract_poverty_rate": 0.3486,
+        "passed_over_reason": null,
+        "catchment": {
+          "radius_m": 800.0,
+          "tracts_within_radius": 1,
+          "population_within_radius": 875,
+          "pop_65_plus_within_radius": 118,
+          "car_free_households_within_radius": 159,
+          "households_within_radius": 373,
+          "share_65_plus_within_radius": 0.1349,
+          "no_vehicle_rate_within_radius": 0.4263,
+          "pop_weighted_poverty_rate": 0.3486,
+          "tract_geo_ids": [
+            "13121006602"
+          ]
+        }
+      }
+    ],
+    "runner_up_sites": [],
+    "heat_frequency": null,
+    "equity_audit": null,
+    "proposal_markdown": "### Street-Level Heat Offset Assessment — Near Venetian Hills / Oakland City (Tract 13121006602) (Tract `13121006602`) [P1]\n\n- **Coordinates:** `33.7195, -84.4252` (`unmeasured` grid cell) · [Google Maps Pin](https://www.google.com/maps/search/?api=1&query=33.71950,-84.42520) · [Walking Directions](https://www.google.com/maps/dir/?api=1&destination=33.71950,-84.42520&travelmode=walking) [P1]\n- **Predicted Heat Offset (`a4i_ml.offset_model_v1`):** **`+0.51 °F`** relative to the Atlanta Heat Watch campaign mean (`82.1 °F`); on a `98 °F` forecast day, that implies conditions feeling closer to `~98.5 °F` [P1]\n- **Top `ML.EXPLAIN_PREDICT` Physical Driver:** `housing_within_1500m` (+0.390 °F) [P1]\n- **GHCN Heat Frequency (`2019–2025`):** `~23.9` days/yr of `>=95 °F`-equivalent heat vs. `23.9` days/yr citywide (`+11.1` extra hot days/yr) [P1]\n- **Walkable Catchment (`800 m`):** `875` residents, `159` car-free households (`42.6%`), `118` seniors 65+ (`13.5%`), `34.9%` poverty [P1]",
+    "proposal_sections": {
+      "why_these": "Selected sites maximize composite heat offset and transit-dependent / senior vulnerability while maintaining >= 2.0 km spacing [P1].",
+      "what_this_displaces": "Runner-up candidates either fall within the 2.0 km catchment spacing of a higher-ranked center or serve fewer car-free and senior residents [P1]."
+    },
+    "limitations": [
+      "Heat offsets come from a single afternoon Heat Watch campaign.",
+      "Catchment distances are straight-line (800 m), not walking-network routes.",
+      "The model predicts outdoor ambient heat offset, not indoor temperatures or health outcomes.",
+      "Seven years of GHCN station history show interannual variability, not a multi-decade climate trend.",
+      "Race and ethnicity are never model or ranking inputs; they appear only in post-hoc equity auditing."
+    ],
+    "model_version": "offset_model_v1",
+    "generated_at": "sample"
+  }
+}

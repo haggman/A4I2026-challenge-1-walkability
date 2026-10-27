@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "intent_type": {
+      "enum": [
+        "site_selection",
+        "explain_location",
+        "compare_sites",
+        "heat_frequency",
+        "demographics",
+        "equity_audit",
+        "out_of_scope_city",
+        "causal_simulation",
+        "future_forecast",
+        "race_in_model",
+        "ambiguous_prompt"
+      ],
+      "title": "Intent Type",
+      "type": "string"
+    },
+    "mcp_tool_name": {
+      "title": "Mcp Tool Name",
+      "type": "string"
+    },
+    "parameters": {
+      "additionalProperties": true,
+      "title": "Parameters",
+      "type": "object"
+    }
+  },
+  "required": [
+    "intent_type",
+    "mcp_tool_name"
+  ],
+  "title": "DataRequest",
+  "type": "object"
+}
