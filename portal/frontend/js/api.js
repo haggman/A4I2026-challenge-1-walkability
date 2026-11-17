@@ -19,10 +19,10 @@ export const api = {
   tracts: () => getJSON("/api/tracts"),
   heatDays: () => getJSON("/api/heat-days"),
   personas: () => getJSON("/api/personas"),
-  ask: (message) =>
+  ask: (message, persona) =>
     fetch("/api/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ message, persona }),
     }),
 };

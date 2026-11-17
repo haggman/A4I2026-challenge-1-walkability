@@ -30,7 +30,7 @@ Re-run `refresh` whenever `sql/grid/build.sh` rebuilds the tables.
 
 | Path | What it does |
 |---|---|
-| `backend/main.py` | FastAPI: `/api/cells`, `/api/tracts`, `/api/heat-days`, `/api/personas`, `/api/ask` (501 until the agent is wired), and serves `frontend/` |
+| `backend/main.py` | FastAPI endpoints, including `/api/ask` demo location search, and serves `frontend/` |
 | `backend/data.py` | BigQuery → compact JSON snapshot in `data/` (git-ignored) |
 | `backend/personas.py` | Views and the 20 persona questions, each with a data-readiness status |
 | `frontend/js/layers.js` | Map layer catalogue: label, palette, scale, notes. **Add a feature here** |
@@ -38,6 +38,57 @@ Re-run `refresh` whenever `sql/grid/build.sh` rebuilds the tables.
 | `frontend/js/views.js` | The non-map views, generated from the persona catalogue |
 
 No front-end build step: plain ES modules plus MapLibre GL from a CDN.
+
+## Ask API contract
+
+The backend publishes the request and response schemas for `POST /api/ask` in
+[FastAPI's OpenAPI docs](http://localhost:8080/docs) and `/openapi.json`.
+
+Request:
+
+```json
+{
+  "message": "Where are the hottest measured blocks?",
+  "persona": "Emergency manager"
+}
+```
+
+Successful response:
+
+```json
+{
+  "mode": "demo",
+  "reply": "The warmest measured block in the available campaign snapshot is highlighted.",
+  "locations": [
+    {
+      "lat": 40.6445,
+      "lon": -73.9675,
+      "rank": 1,
+      "label": "Brooklyn grid cell (40644, -73968)",
+      "metric": "offset_f",
+      "value": 4.2,
+      "unit": "°F versus campaign average",
+      "layer": "offset_f",
+      "source": "measured"
+    }
+  ],
+  "caveats": [
+    "Measurements are from one campaign afternoon and are relative to the campaign average, not today's air temperature."
+  ]
+}
+```
+
+Return locations in relevance order. Use decimal WGS 84 coordinates; `source` must be
+`measured`, `estimated`, `predicted`, or `external`. Return an empty `locations` array when
+the answer does not identify places, and include limitations in `caveats`. The endpoint
+currently returns deterministic `mode: "demo"` results ranked from the local data snapshot;
+it does not call an AI agent. The map chat sends its message and selected persona to this
+endpoint, then maps the returned coordinates.
+
+Water-truck deployment questions return up to ten ranked candidate grid cells. The map
+highlights each cell and numbers its marker to match the ranked chat results. The demo ranks
+these candidates using measured campaign heat plus estimated older-resident and no-car
+indicators. It does not forecast tomorrow's heat or identify verified stopping locations.
 
 ## Design decisions to defend
 

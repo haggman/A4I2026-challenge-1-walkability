@@ -1,11 +1,11 @@
 // Map view: grid cells and tracts over a public-domain basemap, a layer picker,
 // overlays, a legend and a click-to-inspect panel.
 import { api } from "./api.js";
-import { LAYER_GROUPS, OVERLAYS, BASEMAPS, findLayer } from "./layers.js";
+import { LAYER_GROUPS, OVERLAYS, BASEMAPS, findLayer } from "./layers.js?v=compact-heat-legend-v2";
 
 const TRANSPARENT = "rgba(0,0,0,0)";
-const state = { map: null, layer: "offset_f", overlays: {}, basemap: "topo", cells: null, tracts: null,
-  tractById: new Map(), domains: {}, onAsk: null };
+const state = { map: null, layer: "offset_f", overlays: {}, basemap: "none", cells: null, tracts: null,
+  cellDeg: 0.001, tractById: new Map(), domains: {}, onAsk: null };
 
 // ------------------------------------------------------------------ data → GeoJSON
 function cellsToGeoJSON({ cell_deg: d, columns, rows }) {
@@ -62,27 +62,85 @@ function colorExpr(layer) {
 
 // ------------------------------------------------------------------ map setup
 function baseStyle() {
-  const sources = {}, layers = [{ id: "bg", type: "background", paint: { "background-color": "#e9ecef" } }];
+  const sources = {}, layers = [{ id: "bg", type: "background", paint: { "background-color": "#f1f3f5" } }];
   for (const b of BASEMAPS.filter((b) => b.url)) {
     sources[`base-${b.id}`] = { type: "raster", tiles: [b.url], tileSize: 256, maxzoom: 16,
       attribution: "Basemap: USGS The National Map" };
     layers.push({ id: `base-${b.id}`, type: "raster", source: `base-${b.id}`,
       layout: { visibility: b.id === state.basemap ? "visible" : "none" },
-      paint: { "raster-saturation": -0.6, "raster-opacity": 0.9 } });
+      paint: { "raster-saturation": -0.85, "raster-opacity": 0.48 } });
   }
   return { version: 8, sources, layers };
+}
+
+function rankedMarkerImage(rank) {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 48;
+  const ctx = canvas.getContext("2d");
+  ctx.beginPath();
+  ctx.arc(24, 24, 20, 0, Math.PI * 2);
+  ctx.fillStyle = "#facc15";
+  ctx.fill();
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = "#78350f";
+  ctx.stroke();
+  ctx.fillStyle = "#422006";
+  ctx.font = "bold 22px sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(String(rank), 24, 24);
+  return ctx.getImageData(0, 0, 48, 48);
 }
 
 function addDataLayers(map) {
   map.addSource("cells", { type: "geojson", data: state.cells,
     attribution: "Heat: NOAA Heat Watch · Trees: NYC 2015 Street Tree Census · People: ACS 2018 (block groups), 2019 (tracts)" });
+  map.addSource("heat-points", {
+    type: "geojson",
+    data: {
+      type: "FeatureCollection",
+      features: state.cells.features.filter((f) =>
+        typeof f.properties.offset_f === "number" || typeof f.properties.heat_index_offset_f === "number")
+        .map((f) => ({
+          type: "Feature", id: f.id, properties: f.properties,
+          geometry: {
+            type: "Point",
+            coordinates: [
+              (f.properties.cell_j + 0.5) * 0.001,
+              (f.properties.cell_i + 0.5) * 0.001,
+            ],
+          },
+        })),
+    },
+  });
   map.addSource("tracts", { type: "geojson", data: state.tracts });
   map.addSource("selected", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+  map.addSource("selected-marker", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+  for (let rank = 1; rank <= 10; rank += 1) {
+    map.addImage(`selected-marker-rank-${rank}`, rankedMarkerImage(rank), { pixelRatio: 2 });
+  }
 
   map.addLayer({ id: "tract-fill", type: "fill", source: "tracts",
     paint: { "fill-color": TRANSPARENT, "fill-opacity": 0.7 } });
   map.addLayer({ id: "cells-fill", type: "fill", source: "cells",
-    paint: { "fill-color": TRANSPARENT, "fill-opacity": 0.78 } });
+    paint: { "fill-color": TRANSPARENT, "fill-opacity": 0.96 } });
+  map.addLayer({ id: "cells-outline", type: "line", source: "cells",
+    filter: ["==", ["typeof", ["get", state.layer]], "number"],
+    paint: {
+      "line-color": "#17212b",
+      "line-width": ["interpolate", ["linear"], ["zoom"], 9, 0.25, 12, 0.7, 15, 1.1],
+      "line-opacity": 0.55,
+    } });
+  map.addLayer({ id: "heat-points", type: "circle", source: "heat-points",
+    filter: ["==", ["typeof", ["get", state.layer]], "number"],
+    layout: { visibility: "visible" },
+    paint: {
+      "circle-color": colorExpr(findLayer(state.layer)),
+      "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 3.5, 12, 5.5, 15, 7.5],
+      "circle-stroke-color": "#ffffff",
+      "circle-stroke-width": 1.25,
+      "circle-opacity": 0.98,
+    } });
   map.addLayer({ id: "out-of-range", type: "fill", source: "cells",
     filter: ["all", ["==", ["get", "is_land"], true], ["!=", ["get", "in_training_range"], true]],
     paint: { "fill-color": "#6b7280", "fill-opacity": 0.55 } });
@@ -94,8 +152,18 @@ function addDataLayers(map) {
     paint: { "line-color": "#c026d3", "line-width": 1.6 } });
   map.addLayer({ id: "tract-lines", type: "line", source: "tracts",
     paint: { "line-color": "#374151", "line-width": 0.6, "line-opacity": 0.45 } });
+  map.addLayer({ id: "selected-fill", type: "fill", source: "selected",
+    paint: { "fill-color": "#f59e0b", "fill-opacity": 0.28 } });
   map.addLayer({ id: "selected-line", type: "line", source: "selected",
-    paint: { "line-color": "#f59e0b", "line-width": 3 } });
+    paint: { "line-color": "#b45309", "line-width": 2.4 } });
+  map.addLayer({ id: "selected-marker-halo", type: "circle", source: "selected-marker",
+    paint: { "circle-radius": 20, "circle-color": "#f59e0b", "circle-opacity": 0.3 } });
+  map.addLayer({ id: "selected-marker-rank", type: "symbol", source: "selected-marker",
+    layout: {
+      "icon-image": ["concat", "selected-marker-rank-", ["to-string", ["get", "rank"]]],
+      "icon-allow-overlap": true,
+      "icon-ignore-placement": true,
+    } });
 }
 
 // The apply* functions only touch the map once its style and data layers exist. Before
@@ -106,6 +174,14 @@ function applyLayer() {
   const isCell = layer.source === "cell";
   map.setPaintProperty("cells-fill", "fill-color", isCell ? colorExpr(layer) : TRANSPARENT);
   map.setPaintProperty("tract-fill", "fill-color", isCell ? TRANSPARENT : colorExpr(layer));
+  map.setLayoutProperty("cells-outline", "visibility", isCell ? "visible" : "none");
+  if (isCell) map.setFilter("cells-outline", ["==", ["typeof", ["get", layer.id]], "number"]);
+  const isHeatMeasurement = ["offset_f", "heat_index_offset_f"].includes(layer.id);
+  map.setLayoutProperty("heat-points", "visibility", isHeatMeasurement ? "visible" : "none");
+  if (isHeatMeasurement) {
+    map.setFilter("heat-points", ["==", ["typeof", ["get", layer.id]], "number"]);
+    map.setPaintProperty("heat-points", "circle-color", colorExpr(layer));
+  }
   renderLegend(layer);
 }
 
@@ -129,6 +205,7 @@ function applyBasemap() {
 // ------------------------------------------------------------------ controls
 function renderLayerPicker() {
   const el = document.getElementById("layer-picker");
+  if (!el) return;
   el.innerHTML = LAYER_GROUPS.map((g) => `
     <div class="layer-group-label">${g.label}</div>
     ${g.layers.map((l) => {
@@ -144,6 +221,7 @@ function renderLayerPicker() {
 
 function renderOverlayPicker() {
   const el = document.getElementById("overlay-picker");
+  if (!el) return;
   el.innerHTML = OVERLAYS.map((o) => `
     <label class="opt"><input type="checkbox" value="${o.id}" ${state.overlays[o.id] ? "checked" : ""}>
       <span class="opt-label">${o.label}</span></label>`).join("");
@@ -152,6 +230,7 @@ function renderOverlayPicker() {
 
 function renderBasemapPicker() {
   const el = document.getElementById("basemap-picker");
+  if (!el) return;
   const draw = () => {
     el.innerHTML = BASEMAPS.map((b) =>
       `<button type="button" data-id="${b.id}" class="${b.id === state.basemap ? "on" : ""}">${b.label}</button>`).join("");
@@ -169,12 +248,20 @@ function renderLegend(layer) {
   const domain = dataDomain(layer);
   const fmt = layer.format || ((v) => v.toFixed(1));
   const ticks = domain.length === 3 ? domain : [domain[0], (domain[0] + domain[1]) / 2, domain[1]];
+  const heatDifference = layer.id === "offset_f" || layer.id === "heat_index_offset_f";
+  const tickLabels = heatDifference
+    ? [`${fmt(ticks[0])} cooler`, `${fmt(ticks[1])} avg`, `${fmt(ticks[2])} warmer`]
+    : ticks.map(fmt);
+  const notes = [
+    layer.note,
+    layer.domain ? "" : "Scale: 2nd–98th percentile across Brooklyn.",
+  ].filter(Boolean);
   el.innerHTML = `
     <div class="legend-title">${layer.label}${layer.unit ? ` <span class="muted">(${layer.unit})</span>` : ""}</div>
     <div class="legend-bar" style="background:linear-gradient(to right, ${layer.palette.join(",")})"></div>
-    <div class="legend-ticks">${ticks.map((t) => `<span>${fmt(t)}</span>`).join("")}</div>
-    ${layer.note ? `<div class="legend-note">${layer.note}</div>` : ""}
-    ${layer.domain ? "" : `<div class="legend-note">Scale: 2nd–98th percentile across Brooklyn.</div>`}`;
+    <div class="legend-ticks">${tickLabels.map((label) => `<span>${label}</span>`).join("")}</div>
+    ${notes.length ? `<details class="legend-info"><summary>About this layer</summary>
+      ${notes.map((note) => `<div>${note}</div>`).join("")}</details>` : ""}`;
 }
 
 // ------------------------------------------------------------------ inspector
@@ -183,6 +270,7 @@ const fmtNum = (v, d = 0) => (typeof v === "number" ? v.toLocaleString(undefined
 
 function renderInspector(p) {
   const el = document.getElementById("inspector");
+  if (!el) return;
   const t = state.tractById.get(p.tract_geo_id) || {};
   const lat = (p.cell_i + 0.5) * 0.001, lon = (p.cell_j + 0.5) * 0.001;
   const measured = typeof p.offset_f === "number";
@@ -229,6 +317,15 @@ function renderInspector(p) {
 
 function selectCell(feature) {
   state.map.getSource("selected").setData({ type: "FeatureCollection", features: [feature] });
+  const p = feature.properties;
+  state.map.getSource("selected-marker").setData({
+    type: "FeatureCollection",
+    features: [{
+      type: "Feature",
+      properties: {},
+      geometry: { type: "Point", coordinates: [(p.cell_j + 0.5) * 0.001, (p.cell_i + 0.5) * 0.001] },
+    }],
+  });
   renderInspector(feature.properties);
 }
 
@@ -238,6 +335,7 @@ export async function initMapView({ onAsk, onStatus }) {
   OVERLAYS.forEach((o) => { state.overlays[o.id] = o.on; });
 
   const [cells, tracts] = await Promise.all([api.cells(), api.tracts()]);
+  state.cellDeg = cells.cell_deg;
   state.cells = cellsToGeoJSON(cells);
   state.tracts = tracts;
   tracts.features.forEach((f) => state.tractById.set(f.properties.geo_id, f.properties));
@@ -294,6 +392,50 @@ export function showLayer(id) {
   const radio = document.querySelector(`#layer-picker input[value="${id}"]`);
   if (radio) radio.checked = true;
   if (state.map.getLayer("cells-fill")) applyLayer();
+}
+
+export function showLocations(locations) {
+  if (!state.ready || !state.map) return { ok: false, message: "Map data is not ready yet." };
+
+  const cellByIndex = new Map(state.cells.features.map((feature) => {
+    const p = feature.properties;
+    return [`${p.cell_i},${p.cell_j}`, feature];
+  }));
+  const matched = locations.map((location) => {
+    const i = Math.round(location.lat / state.cellDeg - 0.5);
+    const j = Math.round(location.lon / state.cellDeg - 0.5);
+    return cellByIndex.get(`${i},${j}`);
+  }).filter(Boolean);
+
+  const layerId = locations.map((location) => location.layer)
+    .find((id) => findLayer(id)?.source === "cell");
+  if (layerId) showLayer(layerId);
+
+  state.map.getSource("selected").setData({
+    type: "FeatureCollection",
+    features: matched,
+  });
+  state.map.getSource("selected-marker").setData({
+    type: "FeatureCollection",
+    features: locations.map((location) => ({
+      type: "Feature",
+      properties: { label: location.label, rank: location.rank ?? 1 },
+      geometry: { type: "Point", coordinates: [location.lon, location.lat] },
+    })),
+  });
+
+  if (locations.length === 1) {
+    state.map.flyTo({ center: [locations[0].lon, locations[0].lat], zoom: 16, duration: 900 });
+  } else if (locations.length > 1) {
+    const bounds = locations.reduce((b, location) => {
+      b[0][0] = Math.min(b[0][0], location.lon); b[0][1] = Math.min(b[0][1], location.lat);
+      b[1][0] = Math.max(b[1][0], location.lon); b[1][1] = Math.max(b[1][1], location.lat);
+      return b;
+    }, [[Infinity, Infinity], [-Infinity, -Infinity]]);
+    state.map.fitBounds(bounds, { padding: 55, maxZoom: 12.5, duration: 700 });
+  }
+  return { ok: matched.length > 0 || locations.length === 0, count: locations.length,
+    message: matched.length ? "" : "The backend locations did not match cells in this map snapshot." };
 }
 
 export function resizeMap() {

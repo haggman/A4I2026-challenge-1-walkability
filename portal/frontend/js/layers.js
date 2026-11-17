@@ -8,7 +8,7 @@
 // To add a feature: add the column to CELL_COLUMNS / TRACT_COLUMNS in backend/data.py,
 // refresh the snapshot, and add an entry here.
 
-const HEAT = ["#2166ac", "#67a9cf", "#d1e5f0", "#f7f7f7", "#fddbc7", "#ef8a62", "#b2182b"];
+const HEAT = ["#2166ac", "#4393c3", "#92c5de", "#f7f7f7", "#f4a582", "#d6604d", "#b2182b"];
 const GREENS = ["#f7fcf5", "#c7e9c0", "#74c476", "#238b45", "#00441b"];
 const BLUES = ["#f7fbff", "#c6dbef", "#6baed6", "#2171b5", "#08306b"];
 const PURPLES = ["#fcfbfd", "#dadaeb", "#9e9ac8", "#6a51a3", "#3f007d"];
@@ -20,14 +20,14 @@ export const LAYER_GROUPS = [
     label: "Heat",
     layers: [
       {
-        id: "offset_f", source: "cell", label: "Measured heat offset", unit: "°F",
+        id: "offset_f", source: "cell", label: "Campaign heat difference", unit: "°F",
         palette: HEAT, domain: [-3, 0, 3], format: (v) => `${v > 0 ? "+" : ""}${v.toFixed(1)}°F`,
-        note: "How much hotter than the campaign average. Driven blocks only, one afternoon.",
+        note: "Relative difference from the citywide campaign average, not the actual air temperature. Measured on one afternoon in surveyed blocks only.",
       },
       {
-        id: "heat_index_offset_f", source: "cell", label: "Measured heat-index offset", unit: "°F",
+        id: "heat_index_offset_f", source: "cell", label: "Campaign feels-like difference", unit: "°F",
         palette: HEAT, domain: [-3, 0, 3], format: (v) => `${v > 0 ? "+" : ""}${v.toFixed(1)}°F`,
-        note: "Same as above, for how hot it feels (temperature + humidity).",
+        note: "Relative heat-index difference including humidity, not the actual feels-like temperature. Measured on one afternoon in surveyed blocks only.",
       },
       {
         id: "est_days_ge_95_per_year", source: "cell", label: "Estimated days ≥ 95°F per year", unit: "days",

@@ -23,7 +23,7 @@ VIEWS = [
     {"id": "history", "label": "Heat history", "icon": "📈",
      "blurb": "How often the city crosses dangerous thresholds, from 7 years of station data."},
     {"id": "ask", "label": "Ask the agent", "icon": "💬",
-     "blurb": "A working conversation with the planning agent (ADK + Gemini)."},
+     "blurb": "Ask a planning question from your role's perspective. Agent replies are not available yet."},
 ]
 
 QUESTIONS = [

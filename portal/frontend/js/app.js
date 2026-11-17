@@ -1,7 +1,7 @@
 // App shell: side navigation and a tiny hash router (#/map, #/today, ...).
 import { api } from "./api.js";
-import { initMapView, showLayer, resizeMap } from "./map.js";
-import { renderView } from "./views.js";
+import { initMapView, showLayer, showLocations, resizeMap } from "./map.js?v=sticky-chat-composer";
+import { mountMapChat, renderView } from "./views.js?v=sticky-chat-composer";
 
 const els = {
   nav: document.getElementById("sidenav"),
@@ -14,12 +14,14 @@ let views = [], questions = [], mapReady = null, askPrefill = "";
 
 function go(id) { location.hash = `#/${id}`; }
 
+function setupMapChat() {
+  mountMapChat(document.getElementById("map-chat-panel"), questions, (locations) => showLocations(locations));
+}
+
 function renderNav(active) {
   els.nav.innerHTML = views.map((v) => {
-    const n = questions.filter((q) => q.view === v.id).length;
     return `<a class="nav-item ${v.id === active ? "active" : ""}" href="#/${v.id}" title="${v.label}">
-      <span>${v.icon}</span><span class="nav-label">${v.label}</span>
-      ${n ? `<span class="nav-count">${n}</span>` : ""}</a>`;
+      <span aria-hidden="true">${v.icon}</span><span class="nav-label">${v.label}</span></a>`;
   }).join("");
 }
 
@@ -60,6 +62,7 @@ async function route() {
 
 async function main() {
   ({ views, questions } = await api.personas());
+  setupMapChat();
   window.addEventListener("hashchange", route);
   await route();
   // Warm the data cache so the map opens instantly later. (Don't build the map itself
