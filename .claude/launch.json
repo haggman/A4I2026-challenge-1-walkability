@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "heat-portal",
+      "runtimeExecutable": "portal/.venv/bin/uvicorn",
+      "runtimeArgs": ["backend.main:app", "--app-dir", "portal", "--reload", "--reload-dir", "portal", "--port", "8080"],
+      "port": 8080
+    }
+  ]
+}

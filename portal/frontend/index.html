@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brooklyn Heat Portal</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">🌡️</span>
+      <div>
+        <div class="brand-title">Brooklyn Heat Portal</div>
+        <div class="brand-sub">Street-level heat, who lives there, and where help should go</div>
+      </div>
+    </div>
+    <div class="topbar-meta" id="data-status">Loading data…</div>
+  </header>
+
+  <div class="shell">
+    <nav class="sidenav" id="sidenav" aria-label="Views"></nav>
+
+    <main class="content">
+      <!-- Map view -->
+      <section class="view view-map" id="view-map" hidden>
+        <div class="map-wrap">
+          <div id="map" role="region" aria-label="Map of Brooklyn"></div>
+          <div class="legend" id="legend"></div>
+        </div>
+        <aside class="panel" aria-label="Map controls">
+          <div class="panel-section">
+            <h2>Colour the map by</h2>
+            <div id="layer-picker"></div>
+          </div>
+          <div class="panel-section">
+            <h2>Overlays</h2>
+            <div id="overlay-picker"></div>
+          </div>
+          <div class="panel-section">
+            <h2>Basemap</h2>
+            <div id="basemap-picker" class="seg"></div>
+          </div>
+          <div class="panel-section inspector" id="inspector">
+            <h2>Block details</h2>
+            <p class="muted">Click any cell on the map.</p>
+          </div>
+        </aside>
+      </section>
+
+      <!-- Generated views (today, decade, equity, history, ask) render here -->
+      <section class="view view-generic" id="view-generic" hidden></section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
