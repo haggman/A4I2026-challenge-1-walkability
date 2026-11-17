@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brooklyn Heat Portal</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="css/app.css?v=stacked-persona-dropdown">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">🌡️</span>
+      <div>
+        <div class="brand-title">Brooklyn Heat Portal</div>
+        <div class="brand-sub">Street-level heat, who lives there, and where help should go</div>
+      </div>
+    </div>
+    <nav class="topnav" id="sidenav" aria-label="Views"></nav>
+    <div class="topbar-meta" id="data-status">Loading data…</div>
+  </header>
+
+  <div class="shell">
+    <main class="content">
+      <!-- Map view -->
+      <section class="view view-map" id="view-map" hidden>
+        <div class="map-wrap">
+          <div id="map" role="region" aria-label="Map of Brooklyn"></div>
+          <div class="legend" id="legend"></div>
+        </div>
+        <aside class="panel chat-only-panel" aria-label="Planning assistant">
+          <div class="map-chat-panel" id="map-chat-panel"></div>
+        </aside>
+      </section>
+
+      <!-- Generated views (today, decade, equity, history, ask) render here -->
+      <section class="view view-generic" id="view-generic" hidden></section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script type="module" src="js/app.js?v=stacked-persona-dropdown"></script>
+</body>
+</html>

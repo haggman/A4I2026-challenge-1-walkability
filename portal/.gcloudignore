@@ -1,0 +1,4 @@
+# Keep the data/ snapshot in Cloud Run source uploads (it's git-ignored).
+.venv/
+__pycache__/
+*.pyc

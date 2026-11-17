@@ -1,0 +1,3 @@
+# BigQuery snapshot -- regenerate with: python -m backend.data refresh
+data/*
+!data/.gitkeep
